@@ -1,0 +1,2476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Spacelift University — SDR Training</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#f8f9fb;--bg-card:#ffffff;--bg-card2:#f2f4f8;--bg-alt:#f7f8fc;
+  --border:#e2e6ef;--border-dark:#c8cedb;
+  --purple:#6d28d9;--purple-light:#8b5cf6;--purple-bg:#f3f0ff;
+  --cyan:#0891b2;--cyan-bg:#ecfeff;
+  --amber:#d97706;--amber-bg:#fffbeb;
+  --green:#059669;--green-bg:#ecfdf5;
+  --red:#dc2626;--red-bg:#fef2f2;
+  --text:#111827;--text-mid:#4b5563;--text-muted:#9ca3af;
+  --font-head:'DM Sans',sans-serif;--font-body:'Inter',sans-serif;--font-mono:'JetBrains Mono',monospace;
+  --shadow:0 1px 3px rgba(0,0,0,.08);--shadow-md:0 4px 12px rgba(0,0,0,.08);--radius:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:15px;line-height:1.65;min-height:100vh;}
+
+nav{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;box-shadow:var(--shadow);overflow-x:auto;scrollbar-width:none;}
+nav::-webkit-scrollbar{display:none;}
+.nav-inner{display:flex;align-items:center;min-width:max-content;padding:0 16px;}
+.nav-brand{font-family:var(--font-head);font-weight:700;font-size:14px;color:var(--purple);padding:14px 20px 14px 4px;border-right:1px solid var(--border);margin-right:8px;white-space:nowrap;}
+.nav-tab{padding:14px 14px;font-family:var(--font-head);font-size:13px;font-weight:600;color:var(--text-muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap;background:none;border-top:none;border-left:none;border-right:none;}
+.nav-tab:hover{color:var(--text-mid);}
+.nav-tab.active{color:var(--purple);border-bottom-color:var(--purple);}
+.nav-tab.done{color:var(--green);}
+.nav-tab.done.active{color:var(--green);border-bottom-color:var(--green);}
+
+.page{display:none;max-width:820px;margin:0 auto;padding:32px 20px 80px;}
+.page.active{display:block;}
+
+.hero{background:#fff;border:1px solid var(--border);border-radius:12px;padding:32px 36px;margin-bottom:20px;box-shadow:var(--shadow);}
+.hero-badge{display:inline-block;font-family:var(--font-head);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 10px;border-radius:100px;background:var(--purple-bg);color:var(--purple);margin-bottom:12px;}
+.hero h1{font-family:var(--font-head);font-size:clamp(22px,3.5vw,28px);font-weight:700;color:var(--text);line-height:1.2;margin-bottom:10px;}
+.hero p{color:var(--text-mid);font-size:15px;max-width:560px;}
+
+.progress-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:22px 28px;margin-bottom:20px;box-shadow:var(--shadow);}
+.progress-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.progress-header span{font-family:var(--font-head);font-weight:600;font-size:14px;}
+.progress-count{color:var(--green);}
+.progress-bar-track{background:var(--border);border-radius:100px;height:5px;margin-bottom:16px;}
+.progress-bar-fill{background:linear-gradient(90deg,var(--purple),var(--cyan));height:100%;border-radius:100px;transition:width .5s;}
+.module-checks{display:flex;flex-wrap:wrap;gap:8px;}
+.module-check{display:flex;align-items:center;gap:7px;background:var(--bg-card2);border:1px solid var(--border);border-radius:7px;padding:6px 12px;font-size:12px;font-weight:500;color:var(--text-mid);cursor:pointer;transition:all .2s;}
+.module-check:hover{border-color:var(--purple-light);color:var(--purple);}
+.module-check.done{border-color:#a7f3d0;background:var(--green-bg);color:var(--green);}
+.check-icon{width:15px;height:15px;border:2px solid var(--border-dark);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:9px;transition:all .2s;}
+.module-check.done .check-icon{background:var(--green);border-color:var(--green);color:#fff;}
+
+.card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:22px 26px;margin-bottom:16px;box-shadow:var(--shadow);}
+h2{font-family:var(--font-head);font-size:17px;font-weight:700;color:var(--cyan);margin-bottom:12px;}
+h3{font-family:var(--font-head);font-size:14px;font-weight:700;color:var(--text);margin-bottom:8px;}
+p{margin-bottom:12px;color:var(--text-mid);}p:last-child{margin-bottom:0;}
+strong{color:var(--text);}
+
+.module-header{background:#fff;border:1px solid var(--border);border-left:4px solid var(--purple);border-radius:12px;padding:26px 30px;margin-bottom:20px;box-shadow:var(--shadow);}
+.module-num{font-family:var(--font-mono);font-size:11px;color:var(--purple-light);letter-spacing:.1em;margin-bottom:6px;}
+.module-header h1{font-family:var(--font-head);font-size:clamp(19px,3vw,25px);font-weight:700;color:var(--text);margin-bottom:8px;line-height:1.25;}
+.module-header p{color:var(--text-mid);max-width:560px;margin-bottom:0;}
+.module-meta{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;}
+.meta-pill{font-size:11px;font-family:var(--font-head);font-weight:600;padding:3px 10px;border-radius:100px;border:1px solid var(--border);color:var(--text-muted);background:var(--bg-card2);}
+
+.accordion{border:1px solid var(--border);border-radius:var(--radius);margin-bottom:10px;overflow:hidden;background:#fff;box-shadow:var(--shadow);}
+.accordion-header{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;cursor:pointer;user-select:none;background:#fff;transition:background .15s;}
+.accordion-header:hover,.accordion-header.open{background:var(--bg-alt);}
+.accordion-header.open{border-bottom:1px solid var(--border);}
+.accordion-left{display:flex;align-items:center;gap:10px;}
+.acc-num{font-family:var(--font-mono);font-size:10px;color:var(--purple);background:var(--purple-bg);padding:2px 7px;border-radius:4px;white-space:nowrap;}
+.acc-title{font-family:var(--font-head);font-weight:600;font-size:14px;color:var(--text);}
+.acc-arrow{color:var(--text-muted);font-size:11px;transition:transform .2s;flex-shrink:0;}
+.accordion-header.open .acc-arrow{transform:rotate(180deg);}
+.accordion-body{display:none;padding:18px 22px;}
+.accordion-body.open{display:block;}
+
+.content-list{list-style:none;padding:0;margin:8px 0;}
+.content-list li{display:flex;align-items:flex-start;gap:8px;padding:2px 0;color:var(--text-mid);font-size:14px;line-height:1.5;}
+.content-list li::before{content:'→';color:var(--purple-light);font-family:var(--font-mono);font-size:10px;margin-top:4px;flex-shrink:0;}
+.content-list.check li::before{content:'✓';color:var(--green);font-size:11px;margin-top:3px;}
+.content-list.warn li::before{content:'✗';color:var(--red);font-size:11px;margin-top:3px;}
+.content-list.dot li::before{content:'·';color:var(--text-muted);font-size:18px;margin-top:-1px;}
+
+.callout{border-left:3px solid var(--amber);background:var(--amber-bg);border-radius:0 8px 8px 0;padding:12px 16px;margin:12px 0;}
+.callout.green{border-left-color:var(--green);background:var(--green-bg);}
+.callout.purple{border-left-color:var(--purple);background:var(--purple-bg);}
+.callout.cyan{border-left-color:var(--cyan);background:var(--cyan-bg);}
+.callout-title{font-family:var(--font-head);font-weight:700;font-size:12px;margin-bottom:4px;color:var(--amber);}
+.callout-title.green{color:var(--green);}.callout-title.purple{color:var(--purple);}.callout-title.cyan{color:var(--cyan);}
+.callout p{font-size:13px;margin-bottom:0;}
+
+.signal-box{background:var(--bg-alt);border:1px solid var(--border);border-radius:8px;padding:10px 14px;margin:10px 0;}
+.signal-label{font-family:var(--font-head);font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--purple);margin-bottom:5px;}
+.signal-quotes{display:flex;flex-direction:column;gap:3px;}
+.signal-quote{font-family:var(--font-mono);font-size:12px;color:var(--cyan);background:var(--cyan-bg);border-radius:4px;padding:3px 9px;}
+
+.flow-diagram{display:flex;align-items:center;flex-wrap:wrap;margin:12px 0;background:var(--bg-card2);border:1px solid var(--border);border-radius:8px;padding:14px 18px;}
+.flow-step{background:#fff;border:1px solid var(--purple-light);border-radius:6px;padding:7px 12px;font-family:var(--font-mono);font-size:12px;font-weight:500;color:var(--purple);}
+.flow-arrow{color:var(--text-muted);font-size:14px;padding:0 7px;}
+
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0;}
+@media(max-width:560px){.two-col{grid-template-columns:1fr;}}
+.mini-card{background:var(--bg-alt);border:1px solid var(--border);border-radius:8px;padding:12px 14px;}
+.mini-card h4{font-family:var(--font-head);font-size:12px;font-weight:700;color:var(--text);margin-bottom:5px;}
+.mini-card p{font-size:12px;color:var(--text-muted);margin:0;}
+
+.knowledge-check{background:#fff;border:1px solid var(--purple-light);border-radius:var(--radius);padding:22px 26px;margin:18px 0;box-shadow:var(--shadow);}
+.kc-header{display:flex;align-items:center;gap:8px;margin-bottom:4px;}
+.kc-header h3{color:var(--purple);font-size:14px;margin:0;}
+.kc-badge{font-family:var(--font-mono);font-size:10px;background:var(--purple-bg);color:var(--purple);padding:2px 7px;border-radius:4px;}
+.kc-desc{font-size:13px;color:var(--text-muted);margin-bottom:16px;}
+.kc-question{margin-bottom:18px;}
+.kc-question:last-child{margin-bottom:0;}
+.kc-q-text{font-weight:600;font-size:13px;color:var(--text);margin-bottom:5px;}
+.kc-prospect-says{font-family:var(--font-mono);font-size:12px;color:var(--cyan);background:var(--cyan-bg);border-radius:6px;padding:9px 13px;margin-bottom:10px;border-left:2px solid var(--cyan);}
+.kc-options{display:flex;flex-direction:column;gap:6px;margin-bottom:8px;}
+.kc-option{display:flex;align-items:flex-start;gap:9px;background:var(--bg-card2);border:1px solid var(--border);border-radius:7px;padding:9px 13px;cursor:pointer;transition:all .15s;font-size:13px;color:var(--text-mid);}
+.kc-option:hover:not(.disabled){background:var(--purple-bg);border-color:var(--purple-light);color:var(--text);}
+.kc-option.correct{background:var(--green-bg);border-color:var(--green);color:var(--text);}
+.kc-option.incorrect{background:var(--red-bg);border-color:var(--red);color:var(--text);}
+.kc-option.reveal-correct{background:var(--green-bg);border-color:var(--green);color:var(--text);}
+.kc-option.disabled{pointer-events:none;}
+.kc-option-letter{font-family:var(--font-head);font-weight:700;font-size:11px;color:var(--purple);background:var(--purple-bg);border-radius:4px;padding:1px 6px;flex-shrink:0;margin-top:1px;}
+.kc-option.correct .kc-option-letter{background:var(--green);color:#fff;}
+.kc-option.incorrect .kc-option-letter{background:var(--red);color:#fff;}
+.kc-option.reveal-correct .kc-option-letter{background:var(--green);color:#fff;}
+.kc-feedback{border-radius:7px;padding:9px 13px;font-size:13px;display:none;margin-top:4px;}
+.kc-feedback.correct{background:var(--green-bg);border:1px solid #a7f3d0;color:var(--green);}
+.kc-feedback.incorrect{background:var(--red-bg);border:1px solid #fca5a5;color:var(--red);}
+.kc-feedback strong{display:block;margin-bottom:3px;}
+
+hr{border:none;border-top:1px solid var(--border);margin:16px 0;}
+
+.complete-section{text-align:center;padding:22px;background:#fff;border:1px solid var(--border);border-radius:var(--radius);margin-top:18px;}
+.complete-btn{background:var(--purple);color:#fff;border:none;padding:11px 30px;border-radius:7px;font-family:var(--font-head);font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;}
+.complete-btn:hover{background:#5b21b6;box-shadow:0 4px 12px rgba(109,40,217,.3);}
+.complete-btn:disabled{background:var(--green);cursor:default;box-shadow:none;}
+.complete-note{font-size:12px;color:var(--text-muted);margin-top:8px;}
+
+.nav-buttons{display:flex;justify-content:space-between;margin-top:18px;gap:10px;}
+.nav-btn{background:#fff;border:1px solid var(--border);color:var(--text-mid);padding:9px 18px;border-radius:7px;font-family:var(--font-head);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;}
+.nav-btn:hover{border-color:var(--purple-light);color:var(--purple);}
+.nav-btn.next{background:var(--purple-bg);border-color:var(--purple-light);color:var(--purple);}
+
+.coming-soon{text-align:center;padding:56px 32px;background:#fff;border:1px solid var(--border);border-radius:12px;}
+.coming-soon .icon{font-size:36px;margin-bottom:12px;}
+.coming-soon h2{color:var(--text-muted);font-size:17px;margin-bottom:8px;}
+.coming-soon p{color:var(--text-muted);font-size:13px;max-width:360px;margin:0 auto;}
+
+.curriculum-table{width:100%;border-collapse:collapse;margin-top:4px;}
+.curriculum-table th{text-align:left;font-family:var(--font-head);font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--cyan);padding:7px 13px;border-bottom:2px solid var(--border);}
+.curriculum-table td{padding:10px 13px;border-bottom:1px solid var(--border);font-size:13px;}
+.curriculum-table tr:last-child td{border-bottom:none;}
+.curriculum-table td:first-child{font-family:var(--font-mono);font-size:11px;color:var(--text-muted);}
+.curriculum-table td:nth-child(2){color:var(--text);font-weight:500;}
+.curriculum-table td:nth-child(3){color:var(--text-mid);}
+.curriculum-table tr{cursor:pointer;transition:background .15s;}
+.curriculum-table tr:hover td{background:var(--bg-alt);}
+
+.cheat-table{width:100%;border-collapse:collapse;}
+.cheat-table th{text-align:left;font-family:var(--font-head);font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--cyan);padding:7px 12px;border-bottom:2px solid var(--border);background:var(--bg-alt);}
+.cheat-table td{padding:8px 12px;font-size:13px;border-bottom:1px solid var(--border);vertical-align:top;}
+.cheat-table tr:last-child td{border-bottom:none;}
+.cheat-table td:first-child{color:var(--purple);font-family:var(--font-mono);font-size:11px;}
+.cheat-table td:nth-child(2){color:var(--text-mid);}
+
+/* SIMULATION */
+.sim-wrapper{background:#fff;border:1px solid var(--border);border-radius:12px;overflow:hidden;box-shadow:var(--shadow-md);margin-bottom:20px;}
+.sim-header{background:var(--purple);color:#fff;padding:18px 22px;}
+.sim-header h2{color:#fff;font-size:17px;margin-bottom:3px;}
+.sim-header p{color:rgba(255,255,255,.75);font-size:12px;margin:0;}
+.sim-progress{background:rgba(255,255,255,.25);border-radius:100px;height:4px;margin-top:12px;}
+.sim-progress-fill{background:#fff;height:100%;border-radius:100px;transition:width .4s;}
+.sim-step-indicator{color:rgba(255,255,255,.65);font-size:11px;font-family:var(--font-mono);margin-top:6px;}
+.sim-body{padding:22px;}
+.sim-screen{display:none;}
+.sim-screen.active{display:block;}
+
+.sim-setup-company{background:var(--bg-alt);border:1px solid var(--border);border-radius:8px;padding:16px 20px;margin-bottom:14px;}
+.sim-setup-company h3{font-size:14px;margin-bottom:10px;}
+.sim-context-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
+@media(max-width:480px){.sim-context-grid{grid-template-columns:1fr;}}
+.context-item{background:#fff;border:1px solid var(--border);border-radius:6px;padding:9px 12px;}
+.context-label{font-size:10px;font-family:var(--font-head);font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);margin-bottom:2px;}
+.context-value{font-size:13px;color:var(--text);font-weight:500;}
+.sim-goal{background:var(--purple-bg);border:1px solid #ddd6fe;border-radius:8px;padding:12px 16px;margin-bottom:16px;}
+.sim-goal-title{font-family:var(--font-head);font-weight:700;font-size:12px;color:var(--purple);margin-bottom:5px;}
+.sim-goal ul{list-style:none;padding:0;}
+.sim-goal ul li{font-size:13px;color:var(--text-mid);padding:1px 0;padding-left:14px;position:relative;}
+.sim-goal ul li::before{content:'→';position:absolute;left:0;color:var(--purple-light);font-size:10px;top:5px;}
+.sim-start-btn{background:var(--purple);color:#fff;border:none;padding:12px 32px;border-radius:8px;font-family:var(--font-head);font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;display:block;margin:0 auto;}
+.sim-start-btn:hover{background:#5b21b6;box-shadow:0 4px 14px rgba(109,40,217,.3);}
+
+.sim-step-icon{font-size:18px;margin-bottom:7px;}
+.sim-prospect-bubble{background:var(--bg-alt);border:1px solid var(--border);border-left:3px solid var(--cyan);border-radius:8px;padding:12px 16px;margin-bottom:16px;}
+.sim-prospect-label{font-size:10px;font-family:var(--font-head);font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--cyan);margin-bottom:5px;}
+.sim-prospect-text{font-size:14px;color:var(--text);font-style:italic;}
+.sim-question{font-family:var(--font-head);font-weight:600;font-size:14px;color:var(--text);margin-bottom:12px;}
+.sim-options{display:flex;flex-direction:column;gap:7px;margin-bottom:12px;}
+.sim-option{display:flex;align-items:flex-start;gap:9px;background:var(--bg-card2);border:1px solid var(--border);border-radius:8px;padding:11px 14px;cursor:pointer;transition:all .15s;font-size:13px;color:var(--text-mid);}
+.sim-option:hover:not(.disabled){background:var(--purple-bg);border-color:var(--purple-light);color:var(--text);}
+.sim-option.correct{background:var(--green-bg);border-color:var(--green);color:var(--text);}
+.sim-option.incorrect{background:var(--red-bg);border-color:var(--red);color:var(--text);}
+.sim-option.reveal-correct{background:var(--green-bg);border-color:var(--green);color:var(--text);}
+.sim-option.disabled{pointer-events:none;}
+.sim-opt-letter{font-family:var(--font-head);font-weight:700;font-size:11px;color:var(--purple);background:var(--purple-bg);border-radius:4px;padding:2px 7px;flex-shrink:0;margin-top:1px;}
+.sim-option.correct .sim-opt-letter,.sim-option.reveal-correct .sim-opt-letter{background:var(--green);color:#fff;}
+.sim-option.incorrect .sim-opt-letter{background:var(--red);color:#fff;}
+.sim-feedback{border-radius:8px;padding:12px 16px;display:none;margin-bottom:12px;}
+.sim-feedback.correct{background:var(--green-bg);border:1px solid #a7f3d0;}
+.sim-feedback.incorrect{background:var(--red-bg);border:1px solid #fca5a5;}
+.sim-feedback-title{font-family:var(--font-head);font-weight:700;font-size:12px;margin-bottom:3px;}
+.sim-feedback.correct .sim-feedback-title{color:var(--green);}
+.sim-feedback.incorrect .sim-feedback-title{color:var(--red);}
+.sim-feedback p{font-size:13px;color:var(--text-mid);margin:0;}
+.sim-next-response{background:var(--bg-alt);border:1px solid var(--border);border-radius:8px;padding:10px 14px;display:none;margin-bottom:12px;}
+.sim-next-btn{background:var(--purple);color:#fff;border:none;padding:9px 22px;border-radius:7px;font-family:var(--font-head);font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;display:none;}
+.sim-next-btn:hover{background:#5b21b6;}
+
+.sim-final{text-align:center;padding:8px 0 14px;}
+.sim-final-icon{font-size:44px;margin-bottom:10px;}
+.sim-final h2{font-size:20px;color:var(--text);margin-bottom:7px;}
+.sim-score{font-family:var(--font-head);font-size:34px;font-weight:700;color:var(--purple);margin-bottom:3px;}
+.sim-score-label{font-size:12px;color:var(--text-muted);margin-bottom:18px;}
+.sim-outcome-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0;text-align:left;}
+@media(max-width:480px){.sim-outcome-grid{grid-template-columns:1fr;}}
+.sim-outcome-item{background:var(--bg-alt);border:1px solid var(--border);border-radius:8px;padding:11px 14px;}
+.sim-outcome-item h4{font-family:var(--font-head);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted);margin-bottom:5px;}
+.sim-outcome-item p{font-size:13px;color:var(--text-mid);margin:0;}
+.sim-retry-btn{background:var(--purple-bg);border:1px solid var(--purple-light);color:var(--purple);padding:9px 22px;border-radius:7px;font-family:var(--font-head);font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;margin-top:8px;}
+.sim-retry-btn:hover{background:var(--purple);color:#fff;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="nav-brand">🚀 Spacelift U</div>
+    <button class="nav-tab active" onclick="showPage('overview')">Overview</button>
+    <button class="nav-tab" id="nav-m1" onclick="showPage('m1')">1 · IaC Basics</button>
+    <button class="nav-tab" id="nav-m2" onclick="showPage('m2')">2 · Terraform Pain</button>
+    <button class="nav-tab" id="nav-m3" onclick="showPage('m3')">3 · Cloud Complexity</button>
+    <button class="nav-tab" id="nav-m4" onclick="showPage('m4')">4 · Governance</button>
+    <button class="nav-tab" id="nav-m5" onclick="showPage('m5')">5 · Platform Teams</button>
+    <button class="nav-tab" id="nav-m6" onclick="showPage('m6')">6 · Spacelift Fit</button>
+    <button class="nav-tab" id="nav-m7" onclick="showPage('m7')">7 · First Call</button>
+    <button class="nav-tab" id="nav-m8" onclick="showPage('m8')">🎯 Mock Call #1</button>
+    <button class="nav-tab" id="nav-m9" onclick="showPage('m9')">🎯 Mock Call #2</button>
+    <button class="nav-tab" id="nav-m10" onclick="showPage('m10')">🎯 Mock Call #3</button>
+    <button class="nav-tab" id="nav-cs" onclick="showPage('cheatsheet')">📋 Cheat Sheet</button>
+  </div>
+</nav>
+
+<!-- OVERVIEW -->
+<div id="page-overview" class="page active">
+  <div class="hero">
+    <div class="hero-badge">Spacelift University</div>
+    <h1>SDR Sales Enablement Program</h1>
+    <p>Master Infrastructure as Code fundamentals so you can hold a credible conversation with any DevOps or Platform Engineering prospect.</p>
+  </div>
+  <div class="progress-card">
+    <div class="progress-header"><span>Your Progress</span><span class="progress-count" id="progress-count">0 of 11 complete</span></div>
+    <div class="progress-bar-track"><div class="progress-bar-fill" id="progress-bar" style="width:0%"></div></div>
+    <div id="module-checks" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;margin-top:4px;">
+      <div class="module-check" id="check-m1" onclick="showPage('m1')"><div class="check-icon" id="icon-m1"></div>1 · IaC Basics</div>
+      <div class="module-check" id="check-m2" onclick="showPage('m2')"><div class="check-icon" id="icon-m2"></div>2 · Terraform Pain</div>
+      <div class="module-check" id="check-m3" onclick="showPage('m3')"><div class="check-icon" id="icon-m3"></div>3 · Cloud Complexity</div>
+      <div class="module-check" id="check-m4" onclick="showPage('m4')"><div class="check-icon" id="icon-m4"></div>4 · Governance</div>
+      <div class="module-check" id="check-m5" onclick="showPage('m5')"><div class="check-icon" id="icon-m5"></div>5 · Platform Teams</div>
+      <div class="module-check" id="check-m6" onclick="showPage('m6')"><div class="check-icon" id="icon-m6"></div>6 · Spacelift Fit</div>
+      <div class="module-check" id="check-m7" onclick="showPage('m7')"><div class="check-icon" id="icon-m7"></div>7 · First Call</div>
+      <div class="module-check" id="check-m8" onclick="showPage('m8')"><div class="check-icon" id="icon-m8"></div>🎯 Mock Call #1</div>
+      <div class="module-check" id="check-m9" onclick="showPage('m9')"><div class="check-icon" id="icon-m9"></div>🎯 Mock Call #2</div>
+      <div class="module-check" id="check-m10" onclick="showPage('m10')"><div class="check-icon" id="icon-m10"></div>🎯 Mock Call #3</div>
+      <div class="module-check" id="check-cs" onclick="showPage('cheatsheet')"><div class="check-icon" id="icon-cs"></div>📋 Cheat Sheet</div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>How This Works</h2>
+    <p>Complete the first 7 modules in order — each builds on the last. Then work through the <strong>Mock Call simulations</strong> to test your pattern recognition in a realistic scenario. The <strong>Cheat Sheet</strong> provides a quick review for use before each call.</p>
+    <div class="callout"><div class="callout-title">⏱ Time Commitment</div><p>~60 minutes to complete all modules and simulations. 2 minutes with the Cheat Sheet before every call after that.</p></div>
+  </div>
+  <div class="card">
+    <h2>What You'll Learn</h2>
+    <table class="curriculum-table">
+      <thead><tr><th>Module</th><th>Topic</th><th>What You'll Be Able To Do</th></tr></thead>
+      <tbody>
+        <tr onclick="showPage('m1')"><td>01</td><td>IaC Basics</td><td>Map any prospect's setup to the core infrastructure flow</td></tr>
+        <tr onclick="showPage('m2')"><td>02</td><td>Terraform Pain</td><td>Recognize the 4 ways Terraform workflows break at scale</td></tr>
+        <tr onclick="showPage('m3')"><td>03</td><td>Cloud Complexity</td><td>Identify when a prospect has outgrown their current model</td></tr>
+        <tr onclick="showPage('m4')"><td>04</td><td>Governance &amp; Risk</td><td>Find compliance and security signals — and the budget owner</td></tr>
+        <tr onclick="showPage('m5')"><td>05</td><td>Platform Teams</td><td>Spot the bottleneck pattern and identify the right buyer</td></tr>
+        <tr onclick="showPage('m6')"><td>06</td><td>Where Spacelift Fits</td><td>Know when to engage — and when to walk away</td></tr>
+        <tr onclick="showPage('m7')"><td>07</td><td>How to Run a Great First Call</td><td>Structure a discovery call and earn the next step</td></tr>
+        <tr onclick="showPage('m8')" style="border-top:2px solid var(--border);"><td>🎯</td><td>Mock Call #1 — Northstar Pay</td><td>Platform bottleneck scenario: 8 scored decision points</td></tr>
+        <tr onclick="showPage('m9')"><td>🎯</td><td>Mock Call #2 — Apex Financial</td><td>Governance &amp; compliance scenario: 8 scored decision points</td></tr>
+        <tr onclick="showPage('m10')"><td>🎯</td><td>Mock Call #3 — Helix Systems</td><td>Enterprise complexity scenario: 8 scored decision points</td></tr>
+        <tr onclick="showPage('cheatsheet')" style="border-top:2px solid var(--border);"><td>📋</td><td>Cheat Sheet</td><td>Pre-call quick reference — signals, questions, positioning</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout green"><div class="callout-title green">🎯 Your Goal</div><p>Have a credible 5-minute conversation with a DevOps engineer or Platform Engineering lead — asking smart questions, recognizing pain, and positioning Spacelift clearly.</p></div>
+</div>
+
+<!-- MODULE 1 -->
+<div id="page-m1" class="page">
+  <div class="module-header">
+    <div class="module-num">MODULE 01 / 06</div>
+    <h1>How Infrastructure Actually Gets Deployed Today</h1>
+    <p>The mental model every technical prospect carries. Learn to map what they say to a diagnostic framework — and use it on every call.</p>
+    <div class="module-meta"><span class="meta-pill">⏱ ~8 min</span><span class="meta-pill">9 sections</span><span class="meta-pill">Knowledge check</span></div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header open" onclick="toggleAccordion(this)">
+      <div class="accordion-left"><span class="acc-num">01</span><span class="acc-title">The Simple Mental Model</span></div><span class="acc-arrow">▼</span>
+    </div>
+    <div class="accordion-body open">
+      <p>Every infrastructure change follows the same pattern. Once you know this flow, you can map anything a prospect says back to it.</p>
+      <div class="flow-diagram">
+        <div class="flow-step">Code</div><span class="flow-arrow">→</span>
+        <div class="flow-step">Git</div><span class="flow-arrow">→</span>
+        <div class="flow-step">Pipeline</div><span class="flow-arrow">→</span>
+        <div class="flow-step">Cloud</div>
+      </div>
+      <ul class="content-list dot">
+        <li><strong>Code</strong> — defines what should exist (Terraform / OpenTofu)</li>
+        <li><strong>Git</strong> — where changes are proposed (pull requests / commits)</li>
+        <li><strong>Pipeline</strong> — where changes are executed (CI/CD tools)</li>
+        <li><strong>Cloud</strong> — where infrastructure actually runs (AWS / Azure / GCP)</li>
+      </ul>
+      <div class="signal-box">
+        <div class="signal-label">🔎 What Prospects Say</div>
+        <div class="signal-quotes">
+          <div class="signal-quote">"We run Terraform through GitHub Actions"</div>
+          <div class="signal-quote">"Changes go through pull requests"</div>
+          <div class="signal-quote">"We deploy through Jenkins"</div>
+        </div>
+      </div>
+      <p style="margin-top:10px;font-size:13px;">These are all fragments of the same system. Your job is to translate them into the full flow.</p>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <div class="accordion-left"><span class="acc-num">02</span><span class="acc-title">Translating What Prospects Say</span></div><span class="acc-arrow">▼</span>
+    </div>
+    <div class="accordion-body">
+      <p>Prospects describe tools, not workflows. Translate automatically.</p>
+      <div class="two-col">
+        <div class="mini-card">
+          <h4>Tool → Flow Stage</h4>
+          <ul class="content-list dot" style="margin:4px 0 0;">
+            <li>"GitHub Actions" / "Jenkins" → <strong>Pipeline</strong></li>
+            <li>"Pull requests" / "PRs" → <strong>Git</strong></li>
+            <li>"Terraform" → <strong>Code</strong></li>
+            <li>"AWS / Azure / GCP" → <strong>Cloud</strong></li>
+          </ul>
+        </div>
+        <div class="mini-card">
+          <h4>Why It Matters</h4>
+          <p>Strong reps don't get stuck on tools. They map to the flow — and that's where real problems live.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <div class="accordion-left"><span class="acc-num">03</span><span class="acc-title">Why This Model Matters on Calls</span></div><span class="acc-arrow">▼</span>
+    </div>
+    <div class="accordion-body">
+      <p>Every problem you'll hear maps somewhere in this chain. When a prospect describes pain, ask: <strong>"Where in the flow is this breaking?"</strong></p>
+      <ul class="content-list">
+        <li>Visibility issues → Pipeline / Cloud</li>
+        <li>Approval issues → Pipeline</li>
+        <li>Infrastructure drift → Code vs. Cloud mismatch</li>
+        <li>Coordination issues → Across multiple stages</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <div class="accordion-left"><span class="acc-num">04</span><span class="acc-title">Early Stage vs. At Scale</span></div><span class="acc-arrow">▼</span>
+    </div>
+    <div class="accordion-body">
+      <div class="two-col">
+        <div class="mini-card"><h4>Early Stage</h4><ul class="content-list dot" style="margin:4px 0 0;"><li>Simple workflows, few engineers</li><li>Minimal coordination needed</li><li>Pipeline works fine</li></ul></div>
+        <div class="mini-card"><h4>At Scale</h4><ul class="content-list dot" style="margin:4px 0 0;"><li>Multiple teams, more environments</li><li>More coordination required</li><li>Higher risk of mistakes</li></ul></div>
+      </div>
+      <div class="callout cyan" style="margin-top:12px;"><div class="callout-title cyan">Key Insight</div><p>The flow stays the same. What changes is complexity, number of people involved, and risk of things going wrong.</p></div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <div class="accordion-left"><span class="acc-num">05</span><span class="acc-title">Where Things Start to Break</span></div><span class="acc-arrow">▼</span>
+    </div>
+    <div class="accordion-body">
+      <p>At scale, problems appear in predictable ways — all breakdowns in the flow:</p>
+      <ul class="content-list warn">
+        <li>Pipelines become harder to manage</li>
+        <li>Approvals become manual and inconsistent</li>
+        <li>Visibility into changes disappears</li>
+        <li>Teams start working differently from each other</li>
+        <li>Infrastructure drifts from what's in code</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <div class="accordion-left"><span class="acc-num">06</span><span class="acc-title">Pattern Recognition Framework</span></div><span class="acc-arrow">▼</span>
+    </div>
+    <div class="accordion-body">
+      <ul class="content-list check">
+        <li><strong>Hear the signal</strong> — "We run Terraform through GitHub Actions"</li>
+        <li><strong>Map to the flow</strong> — Terraform = Code, GitHub Actions = Pipeline</li>
+        <li><strong>Anticipate risk areas</strong> — Is this standardized? How are approvals handled?</li>
+        <li><strong>Ask the follow-up</strong> — "Is that workflow consistent across teams?"</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <div class="accordion-left"><span class="acc-num">07</span><span class="acc-title">What Good Discovery Sounds Like</span></div><span class="acc-arrow">▼</span>
+    </div>
+    <div class="accordion-body">
+      <div class="two-col">
+        <div class="mini-card"><h4 style="color:var(--red);">✗ Weak</h4><p style="font-family:var(--font-mono);font-size:11px;">"What tools are you using?"</p></div>
+        <div class="mini-card"><h4 style="color:var(--green);">✓ Strong</h4><p style="font-family:var(--font-mono);font-size:11px;">"Can you walk me through how infrastructure changes actually get deployed today?"</p></div>
+      </div>
+      <p style="margin-top:10px;font-size:13px;">Then map their answer to the flow. The strong approach gets you a system description — the weak one gets you a tool list.</p>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <div class="accordion-left"><span class="acc-num">08</span><span class="acc-title">Rep Listening Guide</span></div><span class="acc-arrow">▼</span>
+    </div>
+    <div class="accordion-body">
+      <div class="two-col">
+        <div class="mini-card"><h4>Best Follow-Ups</h4><ul class="content-list check" style="margin:4px 0 0;"><li>How does a change move from code to production?</li><li>Is that consistent across teams?</li><li>Where does it tend to break down?</li></ul></div>
+        <div class="mini-card"><h4>What NOT To Do</h4><ul class="content-list warn" style="margin:4px 0 0;"><li>Get stuck in tool details</li><li>Assume the workflow is clean</li><li>Skip understanding the full flow</li></ul></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="knowledge-check">
+    <div class="kc-header"><h3>Knowledge Check</h3><span class="kc-badge">Module 1</span></div>
+    <p class="kc-desc">Select the best answer. Feedback appears immediately.</p>
+    <div class="kc-question">
+      <div class="kc-q-text">A prospect says:</div>
+      <div class="kc-prospect-says">"We run Terraform through GitHub Actions."</div>
+      <div class="kc-q-text">Which part of the infrastructure flow are they describing?</div>
+      <div class="kc-options">
+        <div class="kc-option" onclick="answerKC(this,'m1q1','A')"><span class="kc-option-letter">A</span>Code — where infrastructure is defined</div>
+        <div class="kc-option" onclick="answerKC(this,'m1q1','B')"><span class="kc-option-letter">B</span>Git — where changes are proposed</div>
+        <div class="kc-option" onclick="answerKC(this,'m1q1','C')"><span class="kc-option-letter">C</span>Pipeline — where changes are executed</div>
+        <div class="kc-option" onclick="answerKC(this,'m1q1','D')"><span class="kc-option-letter">D</span>Cloud — where infrastructure runs</div>
+      </div>
+      <div class="kc-feedback" id="fb-m1q1"></div>
+    </div>
+    <hr>
+    <div class="kc-question">
+      <div class="kc-q-text">A prospect says:</div>
+      <div class="kc-prospect-says">"Changes go through pull requests before deployment."</div>
+      <div class="kc-q-text">Which part of the flow is this?</div>
+      <div class="kc-options">
+        <div class="kc-option" onclick="answerKC(this,'m1q2','A')"><span class="kc-option-letter">A</span>Code</div>
+        <div class="kc-option" onclick="answerKC(this,'m1q2','B')"><span class="kc-option-letter">B</span>Git</div>
+        <div class="kc-option" onclick="answerKC(this,'m1q2','C')"><span class="kc-option-letter">C</span>Pipeline</div>
+        <div class="kc-option" onclick="answerKC(this,'m1q2','D')"><span class="kc-option-letter">D</span>Cloud</div>
+      </div>
+      <div class="kc-feedback" id="fb-m1q2"></div>
+    </div>
+  </div>
+
+  <div class="complete-section">
+    <button class="complete-btn" id="btn-complete-m1" onclick="markComplete('m1')">✓ Mark Module 1 Complete</button>
+    <p class="complete-note">Progress saved in this browser.</p>
+  </div>
+  <div class="nav-buttons">
+    <button class="nav-btn" onclick="showPage('overview')">← Overview</button>
+    <button class="nav-btn next" onclick="showPage('m2')">Module 2 →</button>
+  </div>
+</div>
+
+<!-- MODULE 2 -->
+<div id="page-m2" class="page">
+  <div class="module-header">
+    <div class="module-num">MODULE 02 / 06</div>
+    <h1>Terraform in the Real World — and Where It Breaks</h1>
+    <p>A pattern recognition module for real-world infrastructure pain. Not a Terraform tutorial — a field guide for what breaks and why.</p>
+    <div class="module-meta"><span class="meta-pill">⏱ ~8 min</span><span class="meta-pill">6 sections</span><span class="meta-pill">Knowledge check</span></div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header open" onclick="toggleAccordion(this)">
+      <div class="accordion-left"><span class="acc-num">01</span><span class="acc-title">What Terraform Does — and Doesn't Do</span></div><span class="acc-arrow">▼</span>
+    </div>
+    <div class="accordion-body open">
+      <p>Terraform defines infrastructure as code and applies changes to cloud environments. It answers <strong>"what should exist"</strong> and <strong>"what should change."</strong></p>
+      <div class="two-col">
+        <div class="mini-card"><h4 style="color:var(--green);">✓ Terraform handles</h4><ul class="content-list check" style="margin:4px 0 0;"><li>Defining desired state</li><li>Planning and applying changes</li><li>Tracking what exists today</li></ul></div>
+        <div class="mini-card"><h4 style="color:var(--red);">✗ Terraform does NOT handle</h4><ul class="content-list warn" style="margin:4px 0 0;"><li>Who can make changes</li><li>Cross-team coordination</li><li>Approval workflows</li><li>Policy enforcement at scale</li><li>Central audit and tracking</li></ul></div>
+      </div>
+      <div class="callout cyan" style="margin-top:12px;"><div class="callout-title cyan">Key Takeaway</div><p>"We use Terraform" tells you they've standardized on IaC. It tells you nothing about whether their workflows scale, governance exists, or teams are coordinated.</p></div>
+      <div class="signal-box" style="margin-top:10px;">
+        <div class="signal-label">🔎 Early Warning Signals</div>
+        <div class="signal-quotes">
+          <div class="signal-quote">"It works, but it's messy"</div>
+          <div class="signal-quote">"Every team does it a little differently"</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <div class="accordion-left"><span class="acc-num">02</span><span class="acc-title">How Terraform Is Actually Run</span></div><span class="acc-arrow">▼</span>
+    </div>
+    <div class="accordion-body">
+      <p>Most teams run Terraform through general-purpose CI/CD pipelines. Works early. Breaks at scale.</p>
+      <div class="flow-diagram">
+        <div class="flow-step">Code</div><span class="flow-arrow">→</span>
+        <div class="flow-step">Git</div><span class="flow-arrow">→</span>
+        <div class="flow-step">GitHub Actions / Jenkins</div><span class="flow-arrow">→</span>
+        <div class="flow-step">Cloud</div>
+      </div>
+      <div class="callout" style="margin-top:12px;"><div class="callout-title">The Core Mismatch</div><p>CI/CD was built for application delivery. Infrastructure has different requirements: long-lived state, cross-system dependencies, destructive change risk, multi-team coordination. Using CI/CD for both creates technical debt that grows with scale.</p></div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <div class="accordion-left"><span class="acc-num">03</span><span class="acc-title">The Four Breaking Points</span></div><span class="acc-arrow">▼</span>
+    </div>
+    <div class="accordion-body">
+      <p>Terraform setups break in four predictable ways as teams scale. Learn all four.</p>
+      <h3 style="color:var(--red);margin-top:4px;">1. Visibility Breaks</h3>
+      <div class="signal-box"><div class="signal-label">🔎 Signals</div><div class="signal-quotes"><div class="signal-quote">"We don't always know what changed"</div><div class="signal-quote">"Hard to trace changes across environments"</div></div></div>
+      <p style="font-size:13px;margin-top:6px;"><strong>Impact:</strong> Slower debugging, higher incident risk. <span style="color:var(--purple)"><strong>Ask:</strong> "If something breaks in production, how do you trace what changed?"</span></p>
+      <hr>
+      <h3 style="color:var(--red);">2. Approvals & Coordination Break</h3>
+      <div class="signal-box"><div class="signal-label">🔎 Signals</div><div class="signal-quotes"><div class="signal-quote">"Approvals are handled in Slack"</div><div class="signal-quote">"Prod changes require manual coordination"</div></div></div>
+      <p style="font-size:13px;margin-top:6px;"><strong>Impact:</strong> Risk of bad changes reaching production, slower deployments. <span style="color:var(--purple)"><strong>Ask:</strong> "How are production changes approved today? Is that consistent across teams?"</span></p>
+      <hr>
+      <h3 style="color:var(--red);">3. Ownership Breaks</h3>
+      <div class="signal-box"><div class="signal-label">🔎 Signals</div><div class="signal-quotes"><div class="signal-quote">"Every team has its own process"</div><div class="signal-quote">"It's unclear who owns what"</div></div></div>
+      <p style="font-size:13px;margin-top:6px;"><strong>Impact:</strong> Confusion during incidents, slower onboarding. <span style="color:var(--purple)"><strong>Ask:</strong> "Is your Terraform workflow standardized across teams?"</span></p>
+      <hr>
+      <h3 style="color:var(--red);">4. Secrets & Access Break</h3>
+      <div class="signal-box"><div class="signal-label">🔎 Signals</div><div class="signal-quotes"><div class="signal-quote">"Security is concerned about credentials"</div><div class="signal-quote">"Access is inconsistent across teams"</div></div></div>
+      <p style="font-size:13px;margin-top:6px;"><strong>Impact:</strong> Increased risk exposure, audit challenges. <span style="color:var(--purple)"><strong>Ask:</strong> "How are credentials handled during Terraform runs?"</span></p>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <div class="accordion-left"><span class="acc-num">04</span><span class="acc-title">Pattern Recognition Framework</span></div><span class="acc-arrow">▼</span>
+    </div>
+    <div class="accordion-body">
+      <ul class="content-list check">
+        <li><strong>Hear the signal</strong> — "We run Terraform through GitHub Actions and it mostly works"</li>
+        <li><strong>Interpret</strong> — CI/CD used as orchestration; standardization may be weak</li>
+        <li><strong>Expand</strong> — "Is this consistent across teams? Where does it break down?"</li>
+        <li><strong>Identify type</strong> — Coordination? Governance? Security?</li>
+        <li><strong>Light positioning (only after confirming pain)</strong> — "Most teams at that stage run into coordination challenges since CI/CD wasn't built for infrastructure workflows."</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <div class="accordion-left"><span class="acc-num">05</span><span class="acc-title">What Good Discovery Sounds Like</span></div><span class="acc-arrow">▼</span>
+    </div>
+    <div class="accordion-body">
+      <div class="two-col">
+        <div class="mini-card"><h4 style="color:var(--red);">✗ Weak</h4><p style="font-family:var(--font-mono);font-size:11px;">"We help manage Terraform workflows."</p></div>
+        <div class="mini-card"><h4 style="color:var(--green);">✓ Strong</h4><p style="font-family:var(--font-mono);font-size:11px;">"How is Terraform actually being run across teams today? Where does the process start to break down?"</p></div>
+      </div>
+      <div class="callout purple" style="margin-top:12px;"><div class="callout-title purple">The Reframe</div><p>"It sounds like the issue isn't Terraform itself — it's how the workflow is coordinated across teams."</p></div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <div class="accordion-left"><span class="acc-num">06</span><span class="acc-title">Quick Reference: Signal → Problem Type</span></div><span class="acc-arrow">▼</span>
+    </div>
+    <div class="accordion-body">
+      <table class="cheat-table">
+        <thead><tr><th>If you hear</th><th>It likely means</th><th>Explore</th></tr></thead>
+        <tbody>
+          <tr><td>"GitHub Actions for Terraform"</td><td>CI/CD misuse</td><td>Standardization, coordination</td></tr>
+          <tr><td>"Approvals are manual"</td><td>Governance gap</td><td>Approval process, enforcement</td></tr>
+          <tr><td>"Not sure who owns what"</td><td>Ownership breakdown</td><td>Team workflows, responsibility</td></tr>
+          <tr><td>"Concerned about credentials"</td><td>Security risk</td><td>Access, secrets handling</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="knowledge-check">
+    <div class="kc-header"><h3>Knowledge Check</h3><span class="kc-badge">Module 2</span></div>
+    <p class="kc-desc">Select the best answer for each scenario.</p>
+    <div class="kc-question">
+      <div class="kc-q-text">A prospect says:</div>
+      <div class="kc-prospect-says">"We use Terraform with GitHub Actions and it mostly works, but it's getting harder to manage."</div>
+      <div class="kc-q-text">What is the BEST next question?</div>
+      <div class="kc-options">
+        <div class="kc-option" onclick="answerKC(this,'m2q1','A')"><span class="kc-option-letter">A</span>"Do you want to replace GitHub Actions?"</div>
+        <div class="kc-option" onclick="answerKC(this,'m2q1','B')"><span class="kc-option-letter">B</span>"How is that workflow standardized across teams today?"</div>
+        <div class="kc-option" onclick="answerKC(this,'m2q1','C')"><span class="kc-option-letter">C</span>"Are you using Terraform Cloud?"</div>
+        <div class="kc-option" onclick="answerKC(this,'m2q1','D')"><span class="kc-option-letter">D</span>"Do you want better dashboards?"</div>
+      </div>
+      <div class="kc-feedback" id="fb-m2q1"></div>
+    </div>
+    <hr>
+    <div class="kc-question">
+      <div class="kc-q-text">A prospect says:</div>
+      <div class="kc-prospect-says">"Approvals for production changes are mostly handled through Slack and tickets."</div>
+      <div class="kc-q-text">What problem category is this?</div>
+      <div class="kc-options">
+        <div class="kc-option" onclick="answerKC(this,'m2q2','A')"><span class="kc-option-letter">A</span>Visibility</div>
+        <div class="kc-option" onclick="answerKC(this,'m2q2','B')"><span class="kc-option-letter">B</span>Governance — approvals and coordination are manual and inconsistent</div>
+        <div class="kc-option" onclick="answerKC(this,'m2q2','C')"><span class="kc-option-letter">C</span>Cloud provider limitation</div>
+        <div class="kc-option" onclick="answerKC(this,'m2q2','D')"><span class="kc-option-letter">D</span>Cost optimization</div>
+      </div>
+      <div class="kc-feedback" id="fb-m2q2"></div>
+    </div>
+    <hr>
+    <div class="kc-question">
+      <div class="kc-q-text">A prospect says:</div>
+      <div class="kc-prospect-says">"It's not always clear who owns different parts of our infrastructure."</div>
+      <div class="kc-q-text">What is the best interpretation?</div>
+      <div class="kc-options">
+        <div class="kc-option" onclick="answerKC(this,'m2q3','A')"><span class="kc-option-letter">A</span>Terraform is broken and needs replacing</div>
+        <div class="kc-option" onclick="answerKC(this,'m2q3','B')"><span class="kc-option-letter">B</span>Ownership and workflow standardization are weak across teams</div>
+        <div class="kc-option" onclick="answerKC(this,'m2q3','C')"><span class="kc-option-letter">C</span>The cloud provider is causing the issue</div>
+        <div class="kc-option" onclick="answerKC(this,'m2q3','D')"><span class="kc-option-letter">D</span>They need to hire more engineers</div>
+      </div>
+      <div class="kc-feedback" id="fb-m2q3"></div>
+    </div>
+  </div>
+
+  <div class="complete-section">
+    <button class="complete-btn" id="btn-complete-m2" onclick="markComplete('m2')">✓ Mark Module 2 Complete</button>
+    <p class="complete-note">Progress saved in this browser.</p>
+  </div>
+  <div class="nav-buttons">
+    <button class="nav-btn" onclick="showPage('m1')">← Module 1</button>
+    <button class="nav-btn next" onclick="showPage('m3')">Module 3 →</button>
+  </div>
+</div>
+
+<!-- MODULES 3-6 STUBS -->
+<div id="page-m3" class="page">
+  <div class="module-header">
+    <div class="module-num">MODULE 03 / 06</div>
+    <h1>Why Cloud Complexity Becomes a Problem</h1>
+    <p>Nothing is broken yet — but everything is getting harder. Learn to recognize the signals that systems are outgrowing their original design.</p>
+    <div class="module-meta"><span class="meta-pill">⏱ ~8 min</span><span class="meta-pill">8 sections</span><span class="meta-pill">Knowledge check</span></div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header open" onclick="toggleAccordion(this)">
+      <div class="accordion-left"><span class="acc-num">01</span><span class="acc-title">The Core Insight — Cloud Starts Simple</span></div><span class="acc-arrow">▼</span>
+    </div>
+    <div class="accordion-body open">
+      <p>Early-stage infrastructure is manageable by design. One team, a few services, one or two environments, a simple Terraform workflow. Everything fits in your head.</p>
+      <div class="two-col">
+        <div class="mini-card"><h4>Early Stage</h4><ul class="content-list dot" style="margin:4px 0 0;"><li>One team, few services</li><li>One or two environments</li><li>Simple Terraform workflow</li><li>Everything feels manageable</li></ul></div>
+        <div class="mini-card"><h4>What Changes Over Time</h4><ul class="content-list dot" style="margin:4px 0 0;"><li>More teams added</li><li>More services created</li><li>More environments appear</li><li>More dependencies form</li></ul></div>
+      </div>
+      <div class="callout cyan" style="margin-top:12px;"><div class="callout-title cyan">Key Takeaway</div><p>The technology doesn't fundamentally change. The <strong>number of interactions</strong> between systems and teams increases. That's what creates complexity.</p></div>
+      <div class="signal-box" style="margin-top:10px;">
+        <div class="signal-label">🔎 Early Scale Signals</div>
+        <div class="signal-quotes">
+          <div class="signal-quote">"Things are getting harder to manage"</div>
+          <div class="signal-quote">"We have more teams now"</div>
+          <div class="signal-quote">"It worked fine before, but now it's getting messy"</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <div class="accordion-left"><span class="acc-num">02</span><span class="acc-title">Where Complexity Comes From</span></div><span class="acc-arrow">▼</span>
+    </div>
+    <div class="accordion-body">
+      <p>Complexity grows in four predictable ways. Learn to recognize all of them.</p>
+      <h3 style="color:var(--red);margin-top:4px;">1. Environments Multiply</h3>
+      <div class="signal-box"><div class="signal-label">🔎 Signals</div><div class="signal-quotes"><div class="signal-quote">"We have dev, staging, prod… and more"</div><div class="signal-quote">"Each team has their own environments"</div></div></div>
+      <p style="font-size:13px;margin-top:6px;"><strong>What it means:</strong> More places to manage infrastructure, increased chance of inconsistency between environments.</p>
+      <hr>
+      <h3 style="color:var(--red);">2. Access and Permissions Expand</h3>
+      <div class="signal-box"><div class="signal-label">🔎 Signals</div><div class="signal-quotes"><div class="signal-quote">"Access is different across teams"</div><div class="signal-quote">"Permissions are getting harder to manage"</div></div></div>
+      <p style="font-size:13px;margin-top:6px;"><strong>What it means:</strong> More people interacting with infrastructure, more risk of misconfiguration.</p>
+      <hr>
+      <h3 style="color:var(--red);">3. Shared Resources Increase</h3>
+      <div class="signal-box"><div class="signal-label">🔎 Signals</div><div class="signal-quotes"><div class="signal-quote">"Multiple teams depend on the same systems"</div><div class="signal-quote">"Changes in one place affect others"</div></div></div>
+      <p style="font-size:13px;margin-top:6px;"><strong>What it means:</strong> Hidden dependencies between systems. One team's change can break another team's environment.</p>
+      <hr>
+      <h3 style="color:var(--red);">4. Dependencies Become Critical</h3>
+      <div class="signal-box"><div class="signal-label">🔎 Signals</div><div class="signal-quotes"><div class="signal-quote">"Changes have to happen in a certain order"</div><div class="signal-quote">"We've had issues with things breaking across services"</div></div></div>
+      <p style="font-size:13px;margin-top:6px;"><strong>What it means:</strong> Sequencing matters and nothing is managing it cleanly. This is a coordination problem, not just a tooling issue.</p>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <div class="accordion-left"><span class="acc-num">03</span><span class="acc-title">What Complexity Feels Like</span></div><span class="acc-arrow">▼</span>
+    </div>
+    <div class="accordion-body">
+      <p>By the time a prospect describes these signals, the system has already outgrown its original design. They may not have diagnosed the cause — but the symptoms are clear.</p>
+      <ul class="content-list warn">
+        <li>"Things are getting harder to manage"</li>
+        <li>"We have to coordinate across teams more and more"</li>
+        <li>"Deployments are more fragile than they used to be"</li>
+        <li>"We're seeing more issues as we scale"</li>
+      </ul>
+      <div class="callout" style="margin-top:12px;"><div class="callout-title">Business Impact</div><p>Slower delivery, increased risk of failure, more operational overhead. These aren't random — they're the direct consequence of coordination debt accumulating.</p></div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <div class="accordion-left"><span class="acc-num">04</span><span class="acc-title">Why CI/CD + Terraform Breaks at Scale</span></div><span class="acc-arrow">▼</span>
+    </div>
+    <div class="accordion-body">
+      <div class="two-col">
+        <div class="mini-card"><h4>Early Stage</h4><ul class="content-list check" style="margin:4px 0 0;"><li>Pipeline runs Terraform cleanly</li><li>Changes are simple and isolated</li><li>Few dependencies to manage</li></ul></div>
+        <div class="mini-card"><h4>At Scale — What Breaks</h4><ul class="content-list warn" style="margin:4px 0 0;"><li>Pipelines don't understand dependencies</li><li>No coordination across teams</li><li>Workflows become fragmented</li><li>Each team builds its own solution</li></ul></div>
+      </div>
+      <div class="signal-box" style="margin-top:12px;">
+        <div class="signal-label">🔎 Fragmentation Signals</div>
+        <div class="signal-quotes">
+          <div class="signal-quote">"Pipelines are getting hard to manage"</div>
+          <div class="signal-quote">"Each team built their own workflow"</div>
+          <div class="signal-quote">"Things aren't consistent anymore"</div>
+        </div>
+      </div>
+      <div class="callout purple" style="margin-top:12px;"><div class="callout-title purple">Key Takeaway</div><p>CI/CD tools are not designed to manage cross-team workflows, infrastructure dependencies, or complex coordination. When a prospect describes fragmentation, orchestration is what's missing.</p></div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <div class="accordion-left"><span class="acc-num">05</span><span class="acc-title">Pattern Recognition Framework</span></div><span class="acc-arrow">▼</span>
+    </div>
+    <div class="accordion-body">
+      <ul class="content-list check">
+        <li><strong>Hear the signal</strong> — "We have multiple teams and environments, and things are getting harder to manage"</li>
+        <li><strong>Interpret</strong> — Complexity has increased; coordination is now a problem</li>
+        <li><strong>Expand</strong> — "Where do things break down most often? Which teams need to coordinate changes?"</li>
+        <li><strong>Identify type</strong> — Coordination problem? Dependency problem? Workflow fragmentation?</li>
+        <li><strong>Light positioning (only after confirming pain)</strong> — "Most teams at that stage run into coordination issues as complexity grows, especially when multiple teams and dependencies are involved."</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <div class="accordion-left"><span class="acc-num">06</span><span class="acc-title">What Good Discovery Sounds Like</span></div><span class="acc-arrow">▼</span>
+    </div>
+    <div class="accordion-body">
+      <div class="two-col">
+        <div class="mini-card"><h4 style="color:var(--red);">✗ Weak</h4><p style="font-family:var(--font-mono);font-size:11px;">"Are you using multiple clouds?"</p></div>
+        <div class="mini-card"><h4 style="color:var(--green);">✓ Strong</h4><p style="font-family:var(--font-mono);font-size:11px;">"How many teams are working on infrastructure today? How do changes get coordinated across systems? Where does the process start to break down?"</p></div>
+      </div>
+      <div class="callout purple" style="margin-top:12px;"><div class="callout-title purple">The Reframe</div><p>"It sounds like the challenge isn't a specific tool — it's the growing complexity and coordination across teams."</p></div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <div class="accordion-left"><span class="acc-num">07</span><span class="acc-title">Quick Reference: Signal → Problem Type</span></div><span class="acc-arrow">▼</span>
+    </div>
+    <div class="accordion-body">
+      <table class="cheat-table">
+        <thead><tr><th>If you hear</th><th>It likely means</th><th>Explore</th></tr></thead>
+        <tbody>
+          <tr><td>"Multiple teams and environments"</td><td>Growing complexity</td><td>Coordination across teams</td></tr>
+          <tr><td>"Changes affect other systems"</td><td>Dependency issues</td><td>Workflow sequencing</td></tr>
+          <tr><td>"Things are getting harder"</td><td>System scaling pain</td><td>Where breakdown happens</td></tr>
+          <tr><td>"Pipelines are messy"</td><td>Fragmentation</td><td>Standardization</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="knowledge-check">
+    <div class="kc-header"><h3>Knowledge Check</h3><span class="kc-badge">Module 3</span></div>
+    <p class="kc-desc">Select the best answer for each scenario.</p>
+    <div class="kc-question">
+      <div class="kc-q-text">A prospect says:</div>
+      <div class="kc-prospect-says">"Things are getting harder to manage as we add more teams."</div>
+      <div class="kc-q-text">What is the best interpretation?</div>
+      <div class="kc-options">
+        <div class="kc-option" onclick="answerKC(this,'m3q1','A')"><span class="kc-option-letter">A</span>Terraform is broken and needs replacing</div>
+        <div class="kc-option" onclick="answerKC(this,'m3q1','B')"><span class="kc-option-letter">B</span>System complexity is increasing — coordination is becoming the core problem</div>
+        <div class="kc-option" onclick="answerKC(this,'m3q1','C')"><span class="kc-option-letter">C</span>Cloud provider issue</div>
+        <div class="kc-option" onclick="answerKC(this,'m3q1','D')"><span class="kc-option-letter">D</span>They need more pipelines</div>
+      </div>
+      <div class="kc-feedback" id="fb-m3q1"></div>
+    </div>
+    <hr>
+    <div class="kc-question">
+      <div class="kc-q-text">A prospect says:</div>
+      <div class="kc-prospect-says">"We have dependencies across services that sometimes break."</div>
+      <div class="kc-q-text">What does this signal?</div>
+      <div class="kc-options">
+        <div class="kc-option" onclick="answerKC(this,'m3q2','A')"><span class="kc-option-letter">A</span>No real problem — this is normal</div>
+        <div class="kc-option" onclick="answerKC(this,'m3q2','B')"><span class="kc-option-letter">B</span>Coordination and orchestration challenge — nothing is managing dependencies cleanly</div>
+        <div class="kc-option" onclick="answerKC(this,'m3q2','C')"><span class="kc-option-letter">C</span>Security issue</div>
+        <div class="kc-option" onclick="answerKC(this,'m3q2','D')"><span class="kc-option-letter">D</span>Cost optimization issue</div>
+      </div>
+      <div class="kc-feedback" id="fb-m3q2"></div>
+    </div>
+  </div>
+
+  <div class="complete-section">
+    <button class="complete-btn" id="btn-complete-m3" onclick="markComplete('m3')">✓ Mark Module 3 Complete</button>
+    <p class="complete-note">Progress saved in this browser.</p>
+  </div>
+  <div class="nav-buttons">
+    <button class="nav-btn" onclick="showPage('m2')">← Module 2</button>
+    <button class="nav-btn next" onclick="showPage('m4')">Module 4 →</button>
+  </div>
+</div>
+<div id="page-m4" class="page">
+  <div class="module-header">
+    <div class="module-num">MODULE 04 / 06</div>
+    <h1>Governance, Control, and Risk</h1>
+    <p>This is no longer just an engineering problem — it's a business risk problem. Learn to recognize governance signals and find the budget behind them.</p>
+    <div class="module-meta"><span class="meta-pill">⏱ ~8 min</span><span class="meta-pill">8 sections</span><span class="meta-pill">Knowledge check</span></div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header open" onclick="toggleAccordion(this)">
+      <div class="accordion-left"><span class="acc-num">01</span><span class="acc-title">What Governance Actually Means</span></div><span class="acc-arrow">▼</span>
+    </div>
+    <div class="accordion-body open">
+      <p>When a prospect says "we need better governance," they're describing one of four specific problems. Your job is to find out which one.</p>
+      <ul class="content-list">
+        <li><strong>Approvals</strong> — Who can make changes and when. Is there an enforced workflow, or does it happen in Slack?</li>
+        <li><strong>Policies</strong> — What is allowed or disallowed. Are standards documented but unenforced, or automatically applied?</li>
+        <li><strong>Access Control</strong> — Who has permission to do what. Is access consistent across teams and environments?</li>
+        <li><strong>Audit Trail</strong> — What happened, and can you prove it. How long does audit prep take today?</li>
+      </ul>
+      <div class="signal-box" style="margin-top:10px;">
+        <div class="signal-label">🔎 Vague Governance Requests</div>
+        <div class="signal-quotes">
+          <div class="signal-quote">"We need better controls"</div>
+          <div class="signal-quote">"Approvals aren't consistent"</div>
+          <div class="signal-quote">"Security is getting more involved"</div>
+        </div>
+      </div>
+      <p style="font-size:13px;margin-top:8px;">These are broad statements. Break them into specifics — which of the four areas is actually broken?</p>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <div class="accordion-left"><span class="acc-num">02</span><span class="acc-title">How Governance Works Today — the Reality</span></div><span class="acc-arrow">▼</span>
+    </div>
+    <div class="accordion-body">
+      <p>Most teams govern infrastructure the same way — manually and inconsistently. This works early. At scale, it fails because it relies on people instead of systems.</p>
+      <div class="two-col">
+        <div class="mini-card"><h4>How approvals happen</h4><p>Slack messages, Jira tickets, manual reviews. No enforced workflow. Depends entirely on people following the process.</p></div>
+        <div class="mini-card"><h4>How audit evidence is gathered</h4><p>CI logs, ticket histories, screenshots. Manual, time-consuming, and incomplete.</p></div>
+      </div>
+      <div class="callout" style="margin-top:12px;"><div class="callout-title">Why This Fails at Scale</div><p>Manual governance is inconsistent across teams, difficult to audit and enforce, and breaks down as the number of engineers and environments grows. The intention exists — the enforcement doesn't.</p></div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <div class="accordion-left"><span class="acc-num">03</span><span class="acc-title">The Four Ways Governance Breaks</span></div><span class="acc-arrow">▼</span>
+    </div>
+    <div class="accordion-body">
+      <h3 style="color:var(--red);margin-top:4px;">1. Approvals Are Manual and Inconsistent</h3>
+      <div class="signal-box"><div class="signal-label">🔎 Signals</div><div class="signal-quotes"><div class="signal-quote">"Approvals are done in tickets"</div><div class="signal-quote">"We review things manually before prod"</div></div></div>
+      <p style="font-size:13px;margin-top:6px;"><strong>Impact:</strong> Risk of unreviewed changes reaching production, slower deployments. <span style="color:var(--purple)"><strong>Ask:</strong> "How are production changes approved today? Is that consistent across teams?"</span></p>
+      <hr>
+      <h3 style="color:var(--red);">2. Policies Exist But Aren't Enforced</h3>
+      <div class="signal-box"><div class="signal-label">🔎 Signals</div><div class="signal-quotes"><div class="signal-quote">"We have policies, but they're not always followed"</div><div class="signal-quote">"Standards vary by team"</div></div></div>
+      <p style="font-size:13px;margin-top:6px;"><strong>Impact:</strong> Drift from standards, increased risk exposure. <span style="color:var(--purple)"><strong>Ask:</strong> "Are policies enforced automatically or reviewed manually? What happens when a team violates a standard?"</span></p>
+      <hr>
+      <h3 style="color:var(--red);">3. Access Control Is Fragmented</h3>
+      <div class="signal-box"><div class="signal-label">🔎 Signals</div><div class="signal-quotes"><div class="signal-quote">"Access is inconsistent across teams"</div><div class="signal-quote">"Permissions are hard to manage"</div></div></div>
+      <p style="font-size:13px;margin-top:6px;"><strong>Impact:</strong> Security risk, potential over-permissioning. <span style="color:var(--purple)"><strong>Ask:</strong> "How is access to infrastructure controlled today? Is it consistent across environments?"</span></p>
+      <hr>
+      <h3 style="color:var(--red);">4. Audit Trail Is Weak or Manual</h3>
+      <div class="signal-box"><div class="signal-label">🔎 Signals</div><div class="signal-quotes"><div class="signal-quote">"Audit prep is painful"</div><div class="signal-quote">"We have to piece together logs and tickets"</div></div></div>
+      <p style="font-size:13px;margin-top:6px;"><strong>Impact:</strong> Time-consuming audits, lower confidence in controls. This often drives budget and urgency. <span style="color:var(--purple)"><strong>Ask:</strong> "How do you prove who changed what in infrastructure? How long does audit preparation take?"</span></p>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <div class="accordion-left"><span class="acc-num">04</span><span class="acc-title">When Governance Becomes Urgent — and Gets Budget</span></div><span class="acc-arrow">▼</span>
+    </div>
+    <div class="accordion-body">
+      <p>Governance problems often don't start the buying process. They become urgent — and funded — when triggered by a specific event.</p>
+      <ul class="content-list warn">
+        <li>Security audit with a deadline attached</li>
+        <li>Enterprise customer requiring compliance certification</li>
+        <li>Production incident traced back to an unreviewed change</li>
+        <li>Compliance deadline — SOC 2, ISO 27001, etc.</li>
+      </ul>
+      <div class="signal-box" style="margin-top:10px;">
+        <div class="signal-label">🔎 High-Urgency Signals</div>
+        <div class="signal-quotes">
+          <div class="signal-quote">"We have an audit coming up"</div>
+          <div class="signal-quote">"Security flagged this"</div>
+          <div class="signal-quote">"We need to improve controls"</div>
+        </div>
+      </div>
+      <div class="callout green" style="margin-top:12px;"><div class="callout-title green">Why This Gets Budget</div><p>When security or compliance is involved, this isn't a backlog item. There's typically a deadline, a named stakeholder, and budget already allocated. These conversations accelerate.</p></div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <div class="accordion-left"><span class="acc-num">05</span><span class="acc-title">Pattern Recognition Framework</span></div><span class="acc-arrow">▼</span>
+    </div>
+    <div class="accordion-body">
+      <ul class="content-list check">
+        <li><strong>Hear the signal</strong> — "Approvals are manual" / "Audit prep is painful" / "Security is getting more involved"</li>
+        <li><strong>Interpret</strong> — Governance is inconsistent; controls are not enforced; risk exposure exists</li>
+        <li><strong>Expand</strong> — "Where does the process break down? What is hardest to prove or enforce?"</li>
+        <li><strong>Identify type</strong> — Control problem? Audit problem? Policy enforcement gap?</li>
+        <li><strong>Light positioning (only after confirming pain)</strong> — "Most teams at that stage are trying to move from manual, process-driven governance to something enforced directly in the infrastructure workflow."</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <div class="accordion-left"><span class="acc-num">06</span><span class="acc-title">What Good Discovery Sounds Like</span></div><span class="acc-arrow">▼</span>
+    </div>
+    <div class="accordion-body">
+      <div class="two-col">
+        <div class="mini-card"><h4 style="color:var(--red);">✗ Weak</h4><p style="font-family:var(--font-mono);font-size:11px;">"Do you need better governance tools?"</p></div>
+        <div class="mini-card"><h4 style="color:var(--green);">✓ Strong</h4><p style="font-family:var(--font-mono);font-size:11px;">"How are infrastructure changes approved today? How do you enforce policies across teams? How do you prove changes for audits?"</p></div>
+      </div>
+      <div class="callout purple" style="margin-top:12px;"><div class="callout-title purple">The Reframe</div><p>"It sounds like your governance model relies heavily on manual processes, which is becoming harder to manage as you scale."</p></div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <div class="accordion-left"><span class="acc-num">07</span><span class="acc-title">Quick Reference: Signal → Problem Type</span></div><span class="acc-arrow">▼</span>
+    </div>
+    <div class="accordion-body">
+      <table class="cheat-table">
+        <thead><tr><th>If you hear</th><th>It likely means</th><th>Explore</th></tr></thead>
+        <tbody>
+          <tr><td>"Manual approvals"</td><td>Process-driven governance</td><td>Approval workflow</td></tr>
+          <tr><td>"Audit prep is painful"</td><td>Weak audit trail</td><td>Evidence and tracking</td></tr>
+          <tr><td>"Policies not enforced"</td><td>Enforcement gap</td><td>Policy automation</td></tr>
+          <tr><td>"Access is inconsistent"</td><td>Fragmented permissions</td><td>Access control</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="knowledge-check">
+    <div class="kc-header"><h3>Knowledge Check</h3><span class="kc-badge">Module 4</span></div>
+    <p class="kc-desc">Select the best answer for each scenario.</p>
+    <div class="kc-question">
+      <div class="kc-q-text">A prospect says:</div>
+      <div class="kc-prospect-says">"Audit prep takes forever because we have to gather logs and tickets."</div>
+      <div class="kc-q-text">Best interpretation?</div>
+      <div class="kc-options">
+        <div class="kc-option" onclick="answerKC(this,'m4q1','A')"><span class="kc-option-letter">A</span>Terraform is misconfigured</div>
+        <div class="kc-option" onclick="answerKC(this,'m4q1','B')"><span class="kc-option-letter">B</span>Weak audit trail — no centralized, reliable history of infrastructure changes</div>
+        <div class="kc-option" onclick="answerKC(this,'m4q1','C')"><span class="kc-option-letter">C</span>Cloud provider issue</div>
+        <div class="kc-option" onclick="answerKC(this,'m4q1','D')"><span class="kc-option-letter">D</span>They need more engineers</div>
+      </div>
+      <div class="kc-feedback" id="fb-m4q1"></div>
+    </div>
+    <hr>
+    <div class="kc-question">
+      <div class="kc-q-text">A prospect says:</div>
+      <div class="kc-prospect-says">"We have policies, but they're not always enforced."</div>
+      <div class="kc-q-text">What does this signal?</div>
+      <div class="kc-options">
+        <div class="kc-option" onclick="answerKC(this,'m4q2','A')"><span class="kc-option-letter">A</span>No issue — documented policies are sufficient</div>
+        <div class="kc-option" onclick="answerKC(this,'m4q2','B')"><span class="kc-option-letter">B</span>Policy enforcement gap — policies exist but aren't automated or consistently applied</div>
+        <div class="kc-option" onclick="answerKC(this,'m4q2','C')"><span class="kc-option-letter">C</span>The tooling is too complex</div>
+        <div class="kc-option" onclick="answerKC(this,'m4q2','D')"><span class="kc-option-letter">D</span>Terraform problem</div>
+      </div>
+      <div class="kc-feedback" id="fb-m4q2"></div>
+    </div>
+  </div>
+
+  <div class="complete-section">
+    <button class="complete-btn" id="btn-complete-m4" onclick="markComplete('m4')">✓ Mark Module 4 Complete</button>
+    <p class="complete-note">Progress saved in this browser.</p>
+  </div>
+  <div class="nav-buttons">
+    <button class="nav-btn" onclick="showPage('m3')">← Module 3</button>
+    <button class="nav-btn next" onclick="showPage('m5')">Module 5 →</button>
+  </div>
+</div>
+<div id="page-m5" class="page">
+  <div class="module-header">
+    <div class="module-num">MODULE 05 / 06</div>
+    <h1>Platform Teams vs Developer Velocity</h1>
+    <p>This isn't just about tools — it's about how the company operates. The platform bottleneck is one of the highest-probability entry points for a Spacelift conversation.</p>
+    <div class="module-meta"><span class="meta-pill">⏱ ~8 min</span><span class="meta-pill">8 sections</span><span class="meta-pill">Knowledge check</span></div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header open" onclick="toggleAccordion(this)">
+      <div class="accordion-left"><span class="acc-num">01</span><span class="acc-title">The Core Tension: Speed vs. Control</span></div><span class="acc-arrow">▼</span>
+    </div>
+    <div class="accordion-body open">
+      <p>As companies grow, infrastructure responsibility centralizes into a platform team. Their job: build and maintain infrastructure, enforce standards, keep production safe. At the same time, product teams want to move faster and more infrastructure requests keep coming.</p>
+      <div class="two-col">
+        <div class="mini-card"><h4>What Developers Want</h4><p>Speed and autonomy. Ship features without waiting. Provision what they need without filing a ticket.</p></div>
+        <div class="mini-card"><h4>What Platform Teams Need</h4><p>Control and guardrails. Consistent standards. Production stays safe. Security and compliance requirements met.</p></div>
+      </div>
+      <div class="callout cyan" style="margin-top:12px;"><div class="callout-title cyan">Key Takeaway</div><p>Every infrastructure conversation at scale is shaped by this tension. When you hear friction between platform and development teams, you're hearing the same underlying problem.</p></div>
+      <div class="signal-box" style="margin-top:10px;">
+        <div class="signal-label">🔎 Organizational Friction Signals</div>
+        <div class="signal-quotes">
+          <div class="signal-quote">"Platform team is overloaded"</div>
+          <div class="signal-quote">"Developers are blocked on infrastructure"</div>
+          <div class="signal-quote">"Everything has to go through platform"</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <div class="accordion-left"><span class="acc-num">02</span><span class="acc-title">What It Looks Like in the Real World</span></div><span class="acc-arrow">▼</span>
+    </div>
+    <div class="accordion-body">
+      <p>The default model: developers need infrastructure, they submit a ticket, platform reviews and implements, changes go through approval. At small scale, this works. At scale, it breaks.</p>
+      <ul class="content-list warn">
+        <li>Request volume increases faster than platform team capacity</li>
+        <li>Platform team becomes a bottleneck for every team that needs infrastructure</li>
+        <li>Delivery slows down — developers waiting days for something that should take minutes</li>
+        <li>Frustration builds on both sides</li>
+      </ul>
+      <div class="signal-box" style="margin-top:10px;">
+        <div class="signal-label">🔎 Bottleneck Signals</div>
+        <div class="signal-quotes">
+          <div class="signal-quote">"We have too many requests"</div>
+          <div class="signal-quote">"Platform can't keep up"</div>
+          <div class="signal-quote">"Everything is stuck in a queue"</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <div class="accordion-left"><span class="acc-num">03</span><span class="acc-title">The Two Failed Extremes</span></div><span class="acc-arrow">▼</span>
+    </div>
+    <div class="accordion-body">
+      <p>Organizations usually try one of two things when the bottleneck becomes painful. Neither fully solves the problem.</p>
+      <div class="two-col">
+        <div class="mini-card">
+          <h4 style="color:var(--amber);">Extreme 1: Lock Everything Down</h4>
+          <p>Platform owns everything. Strict approvals. Limited developer access.</p>
+          <ul class="content-list warn" style="margin:6px 0 0;"><li>Platform team overloaded</li><li>Developers blocked</li><li>Slower product delivery</li></ul>
+        </div>
+        <div class="mini-card">
+          <h4 style="color:var(--amber);">Extreme 2: Open Everything Up</h4>
+          <p>Developers provision freely. Minimal governance. Little consistency.</p>
+          <ul class="content-list warn" style="margin:6px 0 0;"><li>Increased risk</li><li>Security and compliance concerns</li><li>Incidents from unreviewed changes</li></ul>
+        </div>
+      </div>
+      <div class="signal-box" style="margin-top:12px;">
+        <div class="signal-label">🔎 Two Failure Mode Signals</div>
+        <div class="signal-quotes">
+          <div class="signal-quote">"Everything goes through platform" → Over-centralization</div>
+          <div class="signal-quote">"Teams just do their own thing" → Lack of control</div>
+        </div>
+      </div>
+      <p style="font-size:13px;margin-top:8px;">Most companies are stuck somewhere between these two extremes. That's your opening.</p>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <div class="accordion-left"><span class="acc-num">04</span><span class="acc-title">The Desired State: Self-Service With Guardrails</span></div><span class="acc-arrow">▼</span>
+    </div>
+    <div class="accordion-body">
+      <p>What mature teams are actively working toward: developers can provision infrastructure themselves, platform defines what's allowed, policies enforce the boundaries automatically.</p>
+      <ul class="content-list check">
+        <li>Developers provision infrastructure without filing tickets</li>
+        <li>Platform defines standards once — not executes every request</li>
+        <li>Policies enforce automatically, not manually</li>
+        <li>Workflows are standardized across teams</li>
+      </ul>
+      <div class="signal-box" style="margin-top:10px;">
+        <div class="signal-label">🔎 Future State Signals — High Quality Entry Points</div>
+        <div class="signal-quotes">
+          <div class="signal-quote">"We want self-service with guardrails"</div>
+          <div class="signal-quote">"We need to reduce tickets to platform"</div>
+          <div class="signal-quote">"We want consistency without slowing teams down"</div>
+        </div>
+      </div>
+      <div class="callout green" style="margin-top:12px;"><div class="callout-title green">Why This Gets Budget</div><p>Self-service with guardrails is often a leadership mandate, not just an engineering goal. When a prospect mentions an "internal developer platform" or "developer experience initiative," there's usually a sponsor above the platform team driving it.</p></div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <div class="accordion-left"><span class="acc-num">05</span><span class="acc-title">Pattern Recognition Framework</span></div><span class="acc-arrow">▼</span>
+    </div>
+    <div class="accordion-body">
+      <ul class="content-list check">
+        <li><strong>Hear the signal</strong> — "Platform team is slammed" / "Developers have to file tickets for everything"</li>
+        <li><strong>Interpret</strong> — Bottleneck exists; workflow doesn't scale; organizational friction is high</li>
+        <li><strong>Expand</strong> — "What still requires platform involvement? Where are developers blocked most often?"</li>
+        <li><strong>Identify type</strong> — Bottleneck problem? Operating model issue? Control vs. speed imbalance?</li>
+        <li><strong>Light positioning (only after confirming pain)</strong> — "Most teams at that stage are moving toward a self-service model where developers provision within defined guardrails, instead of routing everything through platform."</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <div class="accordion-left"><span class="acc-num">06</span><span class="acc-title">What Good Discovery Sounds Like</span></div><span class="acc-arrow">▼</span>
+    </div>
+    <div class="accordion-body">
+      <div class="two-col">
+        <div class="mini-card"><h4 style="color:var(--red);">✗ Weak</h4><p style="font-family:var(--font-mono);font-size:11px;">"We help with self-service infrastructure."</p></div>
+        <div class="mini-card"><h4 style="color:var(--green);">✓ Strong</h4><p style="font-family:var(--font-mono);font-size:11px;">"What types of infrastructure requests still go through your platform team today? Where do developers get blocked most often? What needs to stay controlled vs. delegated?"</p></div>
+      </div>
+      <div class="callout purple" style="margin-top:12px;"><div class="callout-title purple">The Reframe</div><p>"It sounds like your platform team is stuck between enabling developers and maintaining control — and the current model isn't scaling cleanly."</p></div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <div class="accordion-left"><span class="acc-num">07</span><span class="acc-title">Quick Reference: Signal → Problem Type</span></div><span class="acc-arrow">▼</span>
+    </div>
+    <div class="accordion-body">
+      <table class="cheat-table">
+        <thead><tr><th>If you hear</th><th>It likely means</th><th>Explore</th></tr></thead>
+        <tbody>
+          <tr><td>"Platform team is overloaded"</td><td>Bottleneck</td><td>Request flow, ticket volume</td></tr>
+          <tr><td>"Developers are blocked"</td><td>Slow delivery</td><td>Access and autonomy</td></tr>
+          <tr><td>"Everything goes through platform"</td><td>Over-centralization</td><td>Approval flow</td></tr>
+          <tr><td>"Teams do their own thing"</td><td>Lack of control</td><td>Governance and standards</td></tr>
+          <tr><td>"We want self-service"</td><td>Desired future state — likely a live initiative</td><td>Guardrails and delegation</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="knowledge-check">
+    <div class="kc-header"><h3>Knowledge Check</h3><span class="kc-badge">Module 5</span></div>
+    <p class="kc-desc">Select the best answer for each scenario.</p>
+    <div class="kc-question">
+      <div class="kc-q-text">A prospect says:</div>
+      <div class="kc-prospect-says">"Our platform team is buried in tickets and can't keep up."</div>
+      <div class="kc-q-text">Best interpretation?</div>
+      <div class="kc-options">
+        <div class="kc-option" onclick="answerKC(this,'m5q1','A')"><span class="kc-option-letter">A</span>They need to hire more engineers</div>
+        <div class="kc-option" onclick="answerKC(this,'m5q1','B')"><span class="kc-option-letter">B</span>They need better CI/CD tools</div>
+        <div class="kc-option" onclick="answerKC(this,'m5q1','C')"><span class="kc-option-letter">C</span>Their operating model doesn't scale — the ticket-driven model is the bottleneck</div>
+        <div class="kc-option" onclick="answerKC(this,'m5q1','D')"><span class="kc-option-letter">D</span>Terraform is broken</div>
+      </div>
+      <div class="kc-feedback" id="fb-m5q1"></div>
+    </div>
+    <hr>
+    <div class="kc-question">
+      <div class="kc-q-text">A prospect says:</div>
+      <div class="kc-prospect-says">"We want self-service, but we can't just give everyone access."</div>
+      <div class="kc-q-text">What does this signal?</div>
+      <div class="kc-options">
+        <div class="kc-option" onclick="answerKC(this,'m5q2','A')"><span class="kc-option-letter">A</span>No problem exists — this is a normal position</div>
+        <div class="kc-option" onclick="answerKC(this,'m5q2','B')"><span class="kc-option-letter">B</span>Pure developer tooling issue</div>
+        <div class="kc-option" onclick="answerKC(this,'m5q2','C')"><span class="kc-option-letter">C</span>They need self-service with guardrails — speed and control simultaneously</div>
+        <div class="kc-option" onclick="answerKC(this,'m5q2','D')"><span class="kc-option-letter">D</span>Cloud provider issue</div>
+      </div>
+      <div class="kc-feedback" id="fb-m5q2"></div>
+    </div>
+  </div>
+
+  <div class="complete-section">
+    <button class="complete-btn" id="btn-complete-m5" onclick="markComplete('m5')">✓ Mark Module 5 Complete</button>
+    <p class="complete-note">Progress saved in this browser.</p>
+  </div>
+  <div class="nav-buttons">
+    <button class="nav-btn" onclick="showPage('m4')">← Module 4</button>
+    <button class="nav-btn next" onclick="showPage('m6')">Module 6 →</button>
+  </div>
+</div>
+<div id="page-m6" class="page">
+  <div class="module-header">
+    <div class="module-num">MODULE 06 / 06</div>
+    <h1>Where Spacelift Fits — and When It Doesn't</h1>
+    <p>Everything comes together here. Your job is not to pitch Spacelift — it's to recognize when a real problem exists and guide the conversation toward the right next step.</p>
+    <div class="module-meta"><span class="meta-pill">⏱ ~8 min</span><span class="meta-pill">9 sections</span><span class="meta-pill">Knowledge check</span></div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header open" onclick="toggleAccordion(this)">
+      <div class="accordion-left"><span class="acc-num">01</span><span class="acc-title">The Core Insight — Spacelift Is Not a Tool Swap</span></div><span class="acc-arrow">▼</span>
+    </div>
+    <div class="accordion-body open">
+      <div class="two-col">
+        <div class="mini-card"><h4 style="color:var(--red);">Spacelift is NOT</h4><ul class="content-list warn" style="margin:4px 0 0;"><li>A replacement for Terraform</li><li>A better CI/CD tool</li></ul></div>
+        <div class="mini-card"><h4 style="color:var(--green);">Spacelift IS</h4><ul class="content-list check" style="margin:4px 0 0;"><li>A system for managing how infrastructure changes are executed, governed, and coordinated at scale</li></ul></div>
+      </div>
+      <div class="callout cyan" style="margin-top:12px;"><div class="callout-title cyan">Key Takeaway</div><p>If the problem is small or local → Spacelift is likely not the right conversation. If the problem is cross-team, workflow-related, governance-related, or scaling-related → Spacelift becomes relevant.</p></div>
+      <div class="signal-box" style="margin-top:10px;">
+        <div class="signal-label">🔎 Surface-Level Conversations to Go Deeper On</div>
+        <div class="signal-quotes">
+          <div class="signal-quote">"We're evaluating Terraform Cloud alternatives"</div>
+          <div class="signal-quote">"We already have pipelines"</div>
+        </div>
+      </div>
+      <p style="font-size:13px;margin-top:8px;">These are often entry points, not the real story. Understand the underlying problem before positioning anything.</p>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <div class="accordion-left"><span class="acc-num">02</span><span class="acc-title">The Five Problem Types Spacelift Solves</span></div><span class="acc-arrow">▼</span>
+    </div>
+    <div class="accordion-body">
+      <p>You don't need to memorize features. You need to recognize which problem type exists — and whether it's significant enough to act on.</p>
+      <ul class="content-list">
+        <li><strong>Platform Bottleneck (Speed)</strong> — Platform team overloaded, developers blocked, requests slowing delivery</li>
+        <li><strong>Governance & Audit (Control)</strong> — Manual approvals, audit pain, security team involvement, compliance pressure</li>
+        <li><strong>System Complexity (Coordination)</strong> — Multi-team coordination issues, dependencies across systems, fragmented workflows</li>
+        <li><strong>Security & Risk (Exposure)</strong> — Credential concerns, drift or unknown changes, inconsistent access control</li>
+        <li><strong>Tooling & Migration (Change)</strong> — Terraform Cloud limitations, cost concerns, multiple tools across teams</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <div class="accordion-left"><span class="acc-num">03</span><span class="acc-title">The Conversation Framework</span></div><span class="acc-arrow">▼</span>
+    </div>
+    <div class="accordion-body">
+      <ul class="content-list check">
+        <li><strong>Open and ground</strong> — "Can you walk me through how infrastructure changes get deployed today?"</li>
+        <li><strong>Diagnose the problem</strong> — Use signals from Modules 2–5 to identify the pattern</li>
+        <li><strong>Expand the problem</strong> — "Where does this break down? Who is impacted? How often?"</li>
+        <li><strong>Identify the problem type</strong> — Bottleneck? Governance? Coordination? Security? Tooling?</li>
+        <li><strong>Light positioning (only after confirming pain)</strong> — "Most teams at that stage start to look for a more structured way to manage how infrastructure changes are run across teams."</li>
+        <li><strong>Qualify the next step</strong> — Is this worth a deeper technical conversation?</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <div class="accordion-left"><span class="acc-num">04</span><span class="acc-title">What Good Positioning Sounds Like</span></div><span class="acc-arrow">▼</span>
+    </div>
+    <div class="accordion-body">
+      <div class="two-col">
+        <div class="mini-card"><h4 style="color:var(--red);">✗ Weak</h4><ul class="content-list warn" style="margin:4px 0 0;font-size:12px;"><li>"We are an IaC orchestration platform."</li><li>"We replace Terraform Cloud."</li></ul></div>
+        <div class="mini-card"><h4 style="color:var(--green);">✓ Strong</h4><ul class="content-list check" style="margin:4px 0 0;font-size:12px;"><li>"It sounds like the challenge isn't Terraform itself, but how the workflow is coordinated across teams."</li><li>"That's usually where a more structured orchestration and governance layer becomes useful."</li></ul></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <div class="accordion-left"><span class="acc-num">05</span><span class="acc-title">When Spacelift Is a Strong Fit</span></div><span class="acc-arrow">▼</span>
+    </div>
+    <div class="accordion-body">
+      <ul class="content-list check">
+        <li>Multiple teams using Terraform</li>
+        <li>CI/CD pipelines managing infrastructure workflows</li>
+        <li>Platform team bottleneck or manual approval processes</li>
+        <li>Audit or compliance pressure from security team</li>
+        <li>Drift, visibility gaps, or unknown infrastructure changes</li>
+        <li>Cross-team coordination challenges</li>
+      </ul>
+      <div class="signal-box" style="margin-top:10px;">
+        <div class="signal-label">🔎 High-Probability Signals</div>
+        <div class="signal-quotes">
+          <div class="signal-quote">"Things are breaking across teams"</div>
+          <div class="signal-quote">"We don't have consistency"</div>
+          <div class="signal-quote">"We're struggling to manage this at scale"</div>
+        </div>
+      </div>
+      <p style="font-size:13px;margin-top:8px;">These indicate systemic problems. The buyer will likely see value in a platform-level solution, not a tool-level fix.</p>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <div class="accordion-left"><span class="acc-num">06</span><span class="acc-title">When Spacelift Is NOT a Fit — and Why This Matters</span></div><span class="acc-arrow">▼</span>
+    </div>
+    <div class="accordion-body">
+      <ul class="content-list warn">
+        <li>Very small team (1–3 engineers)</li>
+        <li>No dedicated platform or DevOps function</li>
+        <li>Minimal infrastructure complexity</li>
+        <li>No governance or compliance needs</li>
+        <li>Terraform is working fine without friction</li>
+      </ul>
+      <div class="callout green" style="margin-top:12px;"><div class="callout-title green">The Credibility Play</div><p>Being transparent about non-fit builds long-term credibility. "It sounds like your current setup is working well for your scale. This typically becomes more relevant as teams and workflows grow more complex." A rep who said that is the first call they make in 18 months.</p></div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <div class="accordion-left"><span class="acc-num">07</span><span class="acc-title">Rep Decision Framework</span></div><span class="acc-arrow">▼</span>
+    </div>
+    <div class="accordion-body">
+      <p>After every call, ask yourself these questions:</p>
+      <ul class="content-list check">
+        <li>Is there a real problem — not just a theoretical one?</li>
+        <li>Is the problem recurring and impactful enough to act on?</li>
+        <li>Does it involve multiple teams, governance, or coordination?</li>
+        <li>Does it reflect one of the five core problem types?</li>
+      </ul>
+      <div class="two-col" style="margin-top:12px;">
+        <div class="mini-card"><h4 style="color:var(--green);">All YES → Move forward</h4><p>Earn the next step — suggest a deeper technical conversation.</p></div>
+        <div class="mini-card"><h4 style="color:var(--red);">Any NO → Don't force it</h4><p>Disqualify respectfully. Stay in touch. They may grow into it.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <div class="accordion-left"><span class="acc-num">08</span><span class="acc-title">Rep Listening Guide — High-Value Signals</span></div><span class="acc-arrow">▼</span>
+    </div>
+    <div class="accordion-body">
+      <div class="signal-box">
+        <div class="signal-label">🔎 High-Probability Fit Signals</div>
+        <div class="signal-quotes">
+          <div class="signal-quote">"Platform team is a bottleneck"</div>
+          <div class="signal-quote">"Approvals are manual"</div>
+          <div class="signal-quote">"We run Terraform through CI/CD"</div>
+          <div class="signal-quote">"Audit prep is painful"</div>
+          <div class="signal-quote">"Multiple teams doing things differently"</div>
+          <div class="signal-quote">"We're evaluating Terraform Cloud alternatives"</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="knowledge-check">
+    <div class="kc-header"><h3>Knowledge Check</h3><span class="kc-badge">Module 6</span></div>
+    <p class="kc-desc">Select the best answer for each scenario.</p>
+    <div class="kc-question">
+      <div class="kc-q-text">A prospect says:</div>
+      <div class="kc-prospect-says">"We use Terraform with GitHub Actions and it works fine."</div>
+      <div class="kc-q-text">Best response?</div>
+      <div class="kc-options">
+        <div class="kc-option" onclick="answerKC(this,'m6q1','A')"><span class="kc-option-letter">A</span>Pitch Spacelift immediately — they're a Terraform user</div>
+        <div class="kc-option" onclick="answerKC(this,'m6q1','B')"><span class="kc-option-letter">B</span>Ask where it starts to break down at scale</div>
+        <div class="kc-option" onclick="answerKC(this,'m6q1','C')"><span class="kc-option-letter">C</span>Disqualify immediately — no pain</div>
+        <div class="kc-option" onclick="answerKC(this,'m6q1','D')"><span class="kc-option-letter">D</span>Ask about pricing interest</div>
+      </div>
+      <div class="kc-feedback" id="fb-m6q1"></div>
+    </div>
+    <hr>
+    <div class="kc-question">
+      <div class="kc-q-text">A prospect says:</div>
+      <div class="kc-prospect-says">"We're a small team and Terraform is working great."</div>
+      <div class="kc-q-text">Best response?</div>
+      <div class="kc-options">
+        <div class="kc-option" onclick="answerKC(this,'m6q2','A')"><span class="kc-option-letter">A</span>Push for a demo anyway</div>
+        <div class="kc-option" onclick="answerKC(this,'m6q2','B')"><span class="kc-option-letter">B</span>Position Spacelift anyway — they might need it soon</div>
+        <div class="kc-option" onclick="answerKC(this,'m6q2','C')"><span class="kc-option-letter">C</span>Acknowledge it may not be a fit right now and stay in touch</div>
+        <div class="kc-option" onclick="answerKC(this,'m6q2','D')"><span class="kc-option-letter">D</span>Ask about their security policies</div>
+      </div>
+      <div class="kc-feedback" id="fb-m6q2"></div>
+    </div>
+  </div>
+
+  <div class="complete-section">
+    <button class="complete-btn" id="btn-complete-m6" onclick="markComplete('m6')">✓ Mark Module 6 Complete</button>
+    <p class="complete-note">Progress saved in this browser.</p>
+  </div>
+  <div class="nav-buttons">
+    <button class="nav-btn" onclick="showPage('m5')">← Module 5</button>
+    <button class="nav-btn next" onclick="showPage('m7')">Module 7: First Call →</button>
+  </div>
+</div>
+
+<!-- MODULE 7 -->
+<div id="page-m7" class="page">
+  <div class="module-header" style="border-left-color:var(--cyan);">
+    <div class="module-num" style="color:var(--cyan);">MODULE 07 · CALL SKILLS</div>
+    <h1>How to Run a Great First Call</h1>
+    <p>A great first call doesn't sound like a pitch. It sounds like a conversation that uncovers something real.</p>
+    <div class="module-meta"><span class="meta-pill">⏱ ~8 min</span><span class="meta-pill">8 sections</span><span class="meta-pill">Knowledge check</span></div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header open" onclick="toggleAccordion(this)">
+      <div class="accordion-left"><span class="acc-num">01</span><span class="acc-title">The Goal of the First Call</span></div><span class="acc-arrow">▼</span>
+    </div>
+    <div class="accordion-body open">
+      <div class="two-col">
+        <div class="mini-card"><h4 style="color:var(--red);">What you are NOT trying to do</h4><ul class="content-list warn" style="margin:4px 0 0;"><li>Give a full product pitch</li><li>Explain every feature</li><li>Close a deal</li></ul></div>
+        <div class="mini-card"><h4 style="color:var(--green);">What you ARE trying to do</h4><ul class="content-list check" style="margin:4px 0 0;"><li>Understand how infrastructure works today</li><li>Identify if a real problem exists</li><li>Determine if it's worth a deeper conversation</li></ul></div>
+      </div>
+      <div class="callout cyan" style="margin-top:12px;"><div class="callout-title cyan">Definition of Success</div><p>Clear problem identified. Next step earned. That's it.</p></div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <div class="accordion-left"><span class="acc-num">02</span><span class="acc-title">The Call Structure</span></div><span class="acc-arrow">▼</span>
+    </div>
+    <div class="accordion-body">
+      <ul class="content-list dot">
+        <li><strong>Open (2–3 min)</strong> — Set context, build rapport, frame the conversation. <em style="color:var(--text-muted);">"Would it be helpful to start with how you're currently managing infrastructure changes today, and then we can see where it might make sense to go deeper?"</em></li>
+        <li><strong>Understand the system (5–7 min)</strong> — Map Code → Git → Pipeline → Cloud. "How do infrastructure changes get deployed today? What tools are involved?"</li>
+        <li><strong>Find the friction (8–12 min)</strong> — Identify where things break. Look for problem patterns from Modules 2–5. "Where does that process start to break down?"</li>
+        <li><strong>Expand the problem (5–8 min)</strong> — Make it real and impactful. "How often does that happen? Who does it affect? What happens when it goes wrong?"</li>
+        <li><strong>Light positioning (2–3 min)</strong> — Only after confirming pain. "Most teams at that stage start to look for a more structured way to manage how infrastructure workflows are coordinated."</li>
+        <li><strong>Close for next step (2–3 min)</strong> — "If it makes sense, we can bring in one of our solutions engineers to walk through how teams typically solve this."</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <div class="accordion-left"><span class="acc-num">03</span><span class="acc-title">Strong Call vs. Weak Call</span></div><span class="acc-arrow">▼</span>
+    </div>
+    <div class="accordion-body">
+      <div class="two-col">
+        <div class="mini-card"><h4 style="color:var(--red);">✗ Weak Call</h4><ul class="content-list warn" style="margin:4px 0 0;"><li>Jumps into product too early</li><li>Asks shallow tool-level questions</li><li>Accepts "it's messy" without digging</li><li>Doesn't identify real pain</li><li>Pushes for demo without confirmed problem</li></ul></div>
+        <div class="mini-card"><h4 style="color:var(--green);">✓ Strong Call</h4><ul class="content-list check" style="margin:4px 0 0;"><li>Starts with system understanding</li><li>Finds real friction and expands it</li><li>Connects pain to business impact</li><li>Positions lightly and specifically</li><li>Earns a logical next step</li></ul></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <div class="accordion-left"><span class="acc-num">04</span><span class="acc-title">The Four Common Mistakes</span></div><span class="acc-arrow">▼</span>
+    </div>
+    <div class="accordion-body">
+      <h3 style="color:var(--red);">1. Pitching Too Early</h3>
+      <p style="font-size:13px;"><em>"We're an IaC orchestration platform…"</em> — Fix: ask 2–3 more questions before positioning anything.</p>
+      <hr>
+      <h3 style="color:var(--red);">2. Staying at Tool Level</h3>
+      <p style="font-size:13px;"><em>"What tools are you using?"</em> — Fix: move to workflow and coordination questions immediately.</p>
+      <hr>
+      <h3 style="color:var(--red);">3. Not Expanding the Problem</h3>
+      <p style="font-size:13px;">Accepting "it's messy" without digging deeper. Fix: always ask impact questions — how often, who, what happens when it goes wrong.</p>
+      <hr>
+      <h3 style="color:var(--red);">4. Forcing a Fit</h3>
+      <p style="font-size:13px;">Trying to push a demo with no clear problem. Fix: be willing to disqualify. A respectful "not yet" builds more pipeline than a forced demo.</p>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <div class="accordion-left"><span class="acc-num">05</span><span class="acc-title">Real Call Example (Condensed)</span></div><span class="acc-arrow">▼</span>
+    </div>
+    <div class="accordion-body">
+      <div class="sim-prospect-bubble" style="margin-bottom:10px;"><div class="sim-prospect-label">Prospect</div><div class="sim-prospect-text">"We use Terraform with GitHub Actions. It works, but it's getting harder to manage."</div></div>
+      <ul class="content-list check">
+        <li><strong>Rep:</strong> "Can you walk me through how that workflow looks today?" <em style="color:var(--text-muted);">(system understanding)</em></li>
+        <li><strong>Rep:</strong> "Where does that start to break down?" <em style="color:var(--text-muted);">(finding friction)</em></li>
+        <li><strong>Rep:</strong> "How often does that come up?" <em style="color:var(--text-muted);">(expanding impact)</em></li>
+        <li><strong>Rep:</strong> "Got it — it sounds like the challenge isn't Terraform itself, but how changes are coordinated across teams as things scale." <em style="color:var(--text-muted);">(the reframe)</em></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <div class="accordion-left"><span class="acc-num">06</span><span class="acc-title">Decision Framework — After Every Call</span></div><span class="acc-arrow">▼</span>
+    </div>
+    <div class="accordion-body">
+      <ul class="content-list check">
+        <li>Is there a real problem?</li>
+        <li>Is it recurring and impactful?</li>
+        <li>Does it involve multiple teams or workflows?</li>
+      </ul>
+      <div class="two-col" style="margin-top:10px;">
+        <div class="mini-card"><h4 style="color:var(--green);">Strong fit → next step</h4><p>Move to a deeper technical conversation with a solutions engineer.</p></div>
+        <div class="mini-card"><h4 style="color:var(--red);">Weak fit → disqualify respectfully</h4><p>"It sounds like your setup is working well for now. Worth staying in touch as you scale."</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <div class="accordion-left"><span class="acc-num">07</span><span class="acc-title">Quick Reference: Signal → Follow-Up</span></div><span class="acc-arrow">▼</span>
+    </div>
+    <div class="accordion-body">
+      <table class="cheat-table">
+        <thead><tr><th>If you hear</th><th>Ask</th></tr></thead>
+        <tbody>
+          <tr><td>"It's messy"</td><td>"Where does it break down most often?"</td></tr>
+          <tr><td>"We're slow"</td><td>"What's causing the delay — approvals, coordination, or something else?"</td></tr>
+          <tr><td>"Too many requests"</td><td>"What still requires platform team involvement?"</td></tr>
+          <tr><td>"Audit is painful"</td><td>"How do you prove who changed what in infrastructure today?"</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="knowledge-check">
+    <div class="kc-header"><h3>Knowledge Check</h3><span class="kc-badge">Module 7</span></div>
+    <p class="kc-desc">Select the best answer for each scenario.</p>
+    <div class="kc-question">
+      <div class="kc-q-text">A prospect says:</div>
+      <div class="kc-prospect-says">"It works fine, just a bit messy."</div>
+      <div class="kc-q-text">Best response?</div>
+      <div class="kc-options">
+        <div class="kc-option" onclick="answerKC(this,'m7q1','A')"><span class="kc-option-letter">A</span>Pitch the product — "messy" means they have pain</div>
+        <div class="kc-option" onclick="answerKC(this,'m7q1','B')"><span class="kc-option-letter">B</span>Ask where it breaks down — don't accept a surface answer</div>
+        <div class="kc-option" onclick="answerKC(this,'m7q1','C')"><span class="kc-option-letter">C</span>Move to pricing to test commitment</div>
+        <div class="kc-option" onclick="answerKC(this,'m7q1','D')"><span class="kc-option-letter">D</span>End the call — not enough pain</div>
+      </div>
+      <div class="kc-feedback" id="fb-m7q1"></div>
+    </div>
+    <hr>
+    <div class="kc-question">
+      <div class="kc-q-text">A prospect has no clear problems and isn't describing any friction.</div>
+      <div class="kc-q-text">Best response?</div>
+      <div class="kc-options">
+        <div class="kc-option" onclick="answerKC(this,'m7q2','A')"><span class="kc-option-letter">A</span>Push for a demo anyway — they may not realize what they're missing</div>
+        <div class="kc-option" onclick="answerKC(this,'m7q2','B')"><span class="kc-option-letter">B</span>Keep pitching features until something lands</div>
+        <div class="kc-option" onclick="answerKC(this,'m7q2','C')"><span class="kc-option-letter">C</span>Acknowledge the good setup, disqualify respectfully, and stay in touch</div>
+        <div class="kc-option" onclick="answerKC(this,'m7q2','D')"><span class="kc-option-letter">D</span>Ask about competitors they're evaluating</div>
+      </div>
+      <div class="kc-feedback" id="fb-m7q2"></div>
+    </div>
+  </div>
+
+  <div class="complete-section">
+    <button class="complete-btn" id="btn-complete-m7" onclick="markComplete('m7')">✓ Mark Module 7 Complete</button>
+    <p class="complete-note">Progress saved in this browser.</p>
+  </div>
+  <div class="nav-buttons">
+    <button class="nav-btn" onclick="showPage('m6')">← Module 6</button>
+    <button class="nav-btn next" onclick="showPage('m8')">🎯 Mock Call #1 →</button>
+  </div>
+</div>
+
+<!-- MOCK CALL #1 -->
+<div id="page-m8" class="page">
+  <div class="module-header" style="border-left-color:var(--amber);">
+    <div class="module-num" style="color:var(--amber);">MOCK CALL SIMULATION</div>
+    <h1>Mock Call #1 — Northstar Pay</h1>
+    <p>Apply everything from the course in a realistic first discovery call. Make decisions at each step and see how a strong rep navigates the conversation.</p>
+    <div class="module-meta"><span class="meta-pill">⏱ ~15 min</span><span class="meta-pill">8 decision points</span><span class="meta-pill">Scored</span></div>
+  </div>
+
+  <div class="sim-wrapper">
+    <div class="sim-header">
+      <h2 id="sim-header-title">Mock Call #1 — Northstar Pay</h2>
+      <p id="sim-header-sub">Complete the simulation to test your pattern recognition</p>
+      <div class="sim-progress"><div class="sim-progress-fill" id="sim-pfill" style="width:0%"></div></div>
+      <div class="sim-step-indicator" id="sim-indicator">Ready to start</div>
+    </div>
+    <div class="sim-body">
+
+      <div class="sim-screen active" id="sim-s-setup">
+        <div class="sim-setup-company">
+          <h3>📋 Your Pre-Call Brief</h3>
+          <div class="sim-context-grid">
+            <div class="context-item"><div class="context-label">Company</div><div class="context-value">Northstar Pay</div></div>
+            <div class="context-item"><div class="context-label">Industry</div><div class="context-value">Fintech / Payments</div></div>
+            <div class="context-item"><div class="context-label">Size</div><div class="context-value">1,200 employees, 280 engineers</div></div>
+            <div class="context-item"><div class="context-label">Your Contact</div><div class="context-value">Director of Platform Engineering</div></div>
+            <div class="context-item"><div class="context-label">Known Stack</div><div class="context-value">Terraform + GitHub Actions + some Jenkins</div></div>
+            <div class="context-item"><div class="context-label">Team Structure</div><div class="context-value">9-person platform team, 5 product teams</div></div>
+          </div>
+          <p style="font-size:13px;color:var(--text-muted);margin:0;">Engineering has scaled quickly. Infrastructure workflows have not. This is a first discovery call — mild interest, no defined project yet.</p>
+        </div>
+        <div class="sim-goal">
+          <div class="sim-goal-title">🎯 Your Goal</div>
+          <ul><li>Understand how infrastructure works today</li><li>Identify if a real problem exists</li><li>Decide whether to move to a next step</li></ul>
+        </div>
+        <button class="sim-start-btn" onclick="startSim()">Start Simulation →</button>
+      </div>
+
+      <div class="sim-screen" id="sim-s-1">
+        <div class="sim-step-icon">🧠</div>
+        <div class="sim-prospect-bubble"><div class="sim-prospect-label">Prospect says</div><div class="sim-prospect-text">"We use Terraform across the org and it mostly works, but it's getting harder to manage as we grow."</div></div>
+        <div class="sim-question">What do you do NEXT?</div>
+        <div class="sim-options">
+          <div class="sim-option" onclick="answerSim(this,1,'A')"><span class="sim-opt-letter">A</span>"We replace Terraform workflows with orchestration tools."</div>
+          <div class="sim-option" onclick="answerSim(this,1,'B')"><span class="sim-opt-letter">B</span>"What tools are you using exactly?"</div>
+          <div class="sim-option" onclick="answerSim(this,1,'C')"><span class="sim-opt-letter">C</span>"Can you walk me through how infrastructure changes get deployed today?"</div>
+          <div class="sim-option" onclick="answerSim(this,1,'D')"><span class="sim-opt-letter">D</span>"Are you using Terraform Cloud?"</div>
+        </div>
+        <div class="sim-feedback" id="sfb-1"></div>
+        <div class="sim-next-response" id="snr-1"><div class="sim-prospect-label">What happens next</div><div class="sim-prospect-text">The prospect walks you through their setup.</div></div>
+        <button class="sim-next-btn" id="snb-1" onclick="nextStep(2)">Continue →</button>
+      </div>
+
+      <div class="sim-screen" id="sim-s-2">
+        <div class="sim-step-icon">🔧</div>
+        <div class="sim-prospect-bubble"><div class="sim-prospect-label">Prospect says</div><div class="sim-prospect-text">"Most teams use Terraform through GitHub Actions. Some older stuff still runs in Jenkins."</div></div>
+        <div class="sim-question">What does this MOST likely indicate?</div>
+        <div class="sim-options">
+          <div class="sim-option" onclick="answerSim(this,2,'A')"><span class="sim-opt-letter">A</span>A fundamental problem with Terraform itself</div>
+          <div class="sim-option" onclick="answerSim(this,2,'B')"><span class="sim-opt-letter">B</span>CI/CD tools being used to run infrastructure workflows — a pattern that breaks at scale</div>
+          <div class="sim-option" onclick="answerSim(this,2,'C')"><span class="sim-opt-letter">C</span>A cloud provider limitation</div>
+          <div class="sim-option" onclick="answerSim(this,2,'D')"><span class="sim-opt-letter">D</span>A hiring problem</div>
+        </div>
+        <div class="sim-feedback" id="sfb-2"></div>
+        <div class="sim-next-response" id="snr-2"><div class="sim-prospect-label">What happens next</div><div class="sim-prospect-text">You continue the conversation.</div></div>
+        <button class="sim-next-btn" id="snb-2" onclick="nextStep(3)">Continue →</button>
+      </div>
+
+      <div class="sim-screen" id="sim-s-3">
+        <div class="sim-step-icon">🔍</div>
+        <div class="sim-question">You've mapped their system. What is the BEST next question?</div>
+        <div class="sim-options">
+          <div class="sim-option" onclick="answerSim(this,3,'A')"><span class="sim-opt-letter">A</span>"How many engineers do you have?"</div>
+          <div class="sim-option" onclick="answerSim(this,3,'B')"><span class="sim-opt-letter">B</span>"Where does that process start to break down?"</div>
+          <div class="sim-option" onclick="answerSim(this,3,'C')"><span class="sim-opt-letter">C</span>"Why not use Terraform Cloud?"</div>
+          <div class="sim-option" onclick="answerSim(this,3,'D')"><span class="sim-opt-letter">D</span>"What cloud are you on?"</div>
+        </div>
+        <div class="sim-feedback" id="sfb-3"></div>
+        <div class="sim-next-response" id="snr-3"><div class="sim-prospect-label">Prospect responds</div><div class="sim-prospect-text">"Every team kind of does Terraform differently, and approvals are still pretty manual."</div></div>
+        <button class="sim-next-btn" id="snb-3" onclick="nextStep(4)">Continue →</button>
+      </div>
+
+      <div class="sim-screen" id="sim-s-4">
+        <div class="sim-step-icon">🧠</div>
+        <div class="sim-prospect-bubble"><div class="sim-prospect-label">Prospect said</div><div class="sim-prospect-text">"Every team kind of does Terraform differently, and approvals are still pretty manual."</div></div>
+        <div class="sim-question">What type of problem is this?</div>
+        <div class="sim-options">
+          <div class="sim-option" onclick="answerSim(this,4,'A')"><span class="sim-opt-letter">A</span>A Terraform limitation — they need a different IaC tool</div>
+          <div class="sim-option" onclick="answerSim(this,4,'B')"><span class="sim-opt-letter">B</span>Governance and coordination — lack of standardization, manual approvals</div>
+          <div class="sim-option" onclick="answerSim(this,4,'C')"><span class="sim-opt-letter">C</span>A cloud provider issue</div>
+          <div class="sim-option" onclick="answerSim(this,4,'D')"><span class="sim-opt-letter">D</span>A cost optimization problem</div>
+        </div>
+        <div class="sim-feedback" id="sfb-4"></div>
+        <div class="sim-next-response" id="snr-4"><div class="sim-prospect-label">What happens next</div><div class="sim-prospect-text">You continue to expand the problem.</div></div>
+        <button class="sim-next-btn" id="snb-4" onclick="nextStep(5)">Continue →</button>
+      </div>
+
+      <div class="sim-screen" id="sim-s-5">
+        <div class="sim-step-icon">📈</div>
+        <div class="sim-question">You've confirmed the problem type. What is the BEST follow-up?</div>
+        <div class="sim-options">
+          <div class="sim-option" onclick="answerSim(this,5,'A')"><span class="sim-opt-letter">A</span>"What version of Terraform are you using?"</div>
+          <div class="sim-option" onclick="answerSim(this,5,'B')"><span class="sim-opt-letter">B</span>"How often does that create delays or issues for your team?"</div>
+          <div class="sim-option" onclick="answerSim(this,5,'C')"><span class="sim-opt-letter">C</span>"Do you use Terraform modules?"</div>
+          <div class="sim-option" onclick="answerSim(this,5,'D')"><span class="sim-opt-letter">D</span>"Have you looked at other tools?"</div>
+        </div>
+        <div class="sim-feedback" id="sfb-5"></div>
+        <div class="sim-next-response" id="snr-5"><div class="sim-prospect-label">Prospect responds</div><div class="sim-prospect-text">"Our platform team is slammed, and infrastructure changes take longer than they should."</div></div>
+        <button class="sim-next-btn" id="snb-5" onclick="nextStep(6)">Continue →</button>
+      </div>
+
+      <div class="sim-screen" id="sim-s-6">
+        <div class="sim-step-icon">🧠</div>
+        <div class="sim-prospect-bubble"><div class="sim-prospect-label">Prospect said</div><div class="sim-prospect-text">"Our platform team is slammed, and infrastructure changes take longer than they should."</div></div>
+        <div class="sim-question">What is the PRIMARY problem type you're now hearing?</div>
+        <div class="sim-options">
+          <div class="sim-option" onclick="answerSim(this,6,'A')"><span class="sim-opt-letter">A</span>Security issue</div>
+          <div class="sim-option" onclick="answerSim(this,6,'B')"><span class="sim-opt-letter">B</span>Platform bottleneck — platform team overloaded, developers are blocked</div>
+          <div class="sim-option" onclick="answerSim(this,6,'C')"><span class="sim-opt-letter">C</span>Cloud scaling problem</div>
+          <div class="sim-option" onclick="answerSim(this,6,'D')"><span class="sim-opt-letter">D</span>Cost issue</div>
+        </div>
+        <div class="sim-feedback" id="sfb-6"></div>
+        <div class="sim-next-response" id="snr-6"><div class="sim-prospect-label">What happens next</div><div class="sim-prospect-text">You prepare to summarize the problem back to them.</div></div>
+        <button class="sim-next-btn" id="snb-6" onclick="nextStep(7)">Continue →</button>
+      </div>
+
+      <div class="sim-screen" id="sim-s-7">
+        <div class="sim-step-icon">🗣️</div>
+        <div class="sim-question">Time to summarize. Which response is BEST?</div>
+        <div class="sim-options">
+          <div class="sim-option" onclick="answerSim(this,7,'A')"><span class="sim-opt-letter">A</span>"You need a better Terraform setup."</div>
+          <div class="sim-option" onclick="answerSim(this,7,'B')"><span class="sim-opt-letter">B</span>"It sounds like the issue isn't Terraform itself — it's how workflows are coordinated across teams as you scale."</div>
+          <div class="sim-option" onclick="answerSim(this,7,'C')"><span class="sim-opt-letter">C</span>"We can help replace GitHub Actions."</div>
+          <div class="sim-option" onclick="answerSim(this,7,'D')"><span class="sim-opt-letter">D</span>"You should standardize on one tool."</div>
+        </div>
+        <div class="sim-feedback" id="sfb-7"></div>
+        <div class="sim-next-response" id="snr-7"><div class="sim-prospect-label">What happens next</div><div class="sim-prospect-text">The prospect agrees: "Yes, that's exactly it."</div></div>
+        <button class="sim-next-btn" id="snb-7" onclick="nextStep(8)">Continue →</button>
+      </div>
+
+      <div class="sim-screen" id="sim-s-8">
+        <div class="sim-step-icon">🚦</div>
+        <div class="sim-question">The prospect has confirmed the problem. What should you do NEXT?</div>
+        <div class="sim-options">
+          <div class="sim-option" onclick="answerSim(this,8,'A')"><span class="sim-opt-letter">A</span>Jump into a full product demo right now</div>
+          <div class="sim-option" onclick="answerSim(this,8,'B')"><span class="sim-opt-letter">B</span>Ask for a pricing discussion</div>
+          <div class="sim-option" onclick="answerSim(this,8,'C')"><span class="sim-opt-letter">C</span>Suggest a deeper technical conversation with a solutions engineer</div>
+          <div class="sim-option" onclick="answerSim(this,8,'D')"><span class="sim-opt-letter">D</span>End the call — you've confirmed enough</div>
+        </div>
+        <div class="sim-feedback" id="sfb-8"></div>
+        <div class="sim-next-response" id="snr-8"><div class="sim-prospect-label">Suggested language</div><div class="sim-prospect-text">"If it makes sense, we can bring in one of our solutions engineers to walk through how teams typically solve this as they scale."</div></div>
+        <button class="sim-next-btn" id="snb-8" onclick="finishSim()">See Results →</button>
+      </div>
+
+      <div class="sim-screen" id="sim-s-final">
+        <div class="sim-final">
+          <div class="sim-final-icon">🏁</div>
+          <h2>Simulation Complete</h2>
+          <div class="sim-score" id="sim-score">8/8</div>
+          <div class="sim-score-label">correct answers</div>
+          <div class="sim-outcome-grid">
+            <div class="sim-outcome-item"><h4>Scenario tested</h4><p>Platform Bottleneck + Coordination problem — the most common Spacelift entry point.</p></div>
+            <div class="sim-outcome-item"><h4>Key signals</h4><p>"Getting harder to manage" / "Teams do things differently" / "Platform team is slammed"</p></div>
+            <div class="sim-outcome-item"><h4>What strong reps do</h4><p>Start with system understanding, find friction, expand to business impact, earn the next step.</p></div>
+            <div class="sim-outcome-item"><h4>The key move</h4><p>"Not Terraform — it's how the workflow is coordinated." Never pitch until you've confirmed the problem.</p></div>
+          </div>
+          <button class="sim-retry-btn" onclick="resetSim()">↺ Retry Simulation</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="nav-buttons">
+    <button class="nav-btn" onclick="showPage('m7')">← Module 7</button>
+    <button class="nav-btn next" onclick="showPage('m9')">🎯 Mock Call #2 →</button>
+  </div>
+</div>
+
+<!-- MOCK CALL #2 -->
+<div id="page-m9" class="page">
+  <div class="module-header" style="border-left-color:var(--amber);">
+    <div class="module-num" style="color:var(--amber);">MOCK CALL #2 — GOVERNANCE SCENARIO</div>
+    <h1>Mock Call #2 — Apex Financial</h1>
+    <p>Governance and audit pressure. A security-driven conversation — different signals, different problem type, same framework.</p>
+    <div class="module-meta"><span class="meta-pill">⏱ ~15 min</span><span class="meta-pill">8 decision points</span><span class="meta-pill">Scored</span></div>
+  </div>
+
+  <div class="sim-wrapper">
+    <div class="sim-header">
+      <h2 id="s2-header-title">Mock Call #2 — Apex Financial</h2>
+      <p id="s2-header-sub">Governance &amp; audit pressure scenario</p>
+      <div class="sim-progress"><div class="sim-progress-fill" id="s2-pfill" style="width:0%"></div></div>
+      <div class="sim-step-indicator" id="s2-indicator">Ready to start</div>
+    </div>
+    <div class="sim-body">
+
+      <div class="sim-screen active" id="s2-setup">
+        <div class="sim-setup-company">
+          <h3>📋 Your Pre-Call Brief</h3>
+          <div class="sim-context-grid">
+            <div class="context-item"><div class="context-label">Company</div><div class="context-value">Apex Financial</div></div>
+            <div class="context-item"><div class="context-label">Industry</div><div class="context-value">Fintech / Payments</div></div>
+            <div class="context-item"><div class="context-label">Size</div><div class="context-value">900 employees, ~180 engineers</div></div>
+            <div class="context-item"><div class="context-label">Your Contact</div><div class="context-value">Head of Cloud Security</div></div>
+            <div class="context-item"><div class="context-label">Known Stack</div><div class="context-value">Terraform + GitLab CI, AWS primary + some Azure</div></div>
+            <div class="context-item"><div class="context-label">Compliance</div><div class="context-value">Heavy SOC 2 / PCI requirements</div></div>
+          </div>
+          <p style="font-size:13px;color:var(--text-muted);margin:0;">Audit requirements have increased. Security team is under pressure to prove control. Infrastructure workflows are not fully governed. The prospect is not looking for a new tool — they're trying to solve audit and control problems.</p>
+        </div>
+        <div class="sim-goal">
+          <div class="sim-goal-title">🎯 Your Goal</div>
+          <ul><li>Understand how governance works today</li><li>Identify gaps in control and visibility</li><li>Determine if this is a real compliance risk</li></ul>
+        </div>
+        <button class="sim-start-btn" onclick="startSim2()">Start Simulation →</button>
+      </div>
+
+      <div class="sim-screen" id="s2-1">
+        <div class="sim-step-icon">🧠</div>
+        <div class="sim-prospect-bubble"><div class="sim-prospect-label">Prospect says</div><div class="sim-prospect-text">"Right now, a lot of our Terraform changes are happening through pipelines, but audit visibility is… not great."</div></div>
+        <div class="sim-question">What do you do NEXT?</div>
+        <div class="sim-options">
+          <div class="sim-option" onclick="answerSim2(this,1,'A')"><span class="sim-opt-letter">A</span>"We provide full audit logging."</div>
+          <div class="sim-option" onclick="answerSim2(this,1,'B')"><span class="sim-opt-letter">B</span>"What compliance framework are you under?"</div>
+          <div class="sim-option" onclick="answerSim2(this,1,'C')"><span class="sim-opt-letter">C</span>"Can you walk me through how changes are approved and tracked today?"</div>
+          <div class="sim-option" onclick="answerSim2(this,1,'D')"><span class="sim-opt-letter">D</span>"Are you using Terraform Cloud?"</div>
+        </div>
+        <div class="sim-feedback" id="s2fb-1"></div>
+        <div class="sim-next-response" id="s2nr-1"><div class="sim-prospect-label">What happens next</div><div class="sim-prospect-text">The prospect explains their current process.</div></div>
+        <button class="sim-next-btn" id="s2nb-1" onclick="nextSim2(2)">Continue →</button>
+      </div>
+
+      <div class="sim-screen" id="s2-2">
+        <div class="sim-step-icon">🔧</div>
+        <div class="sim-prospect-bubble"><div class="sim-prospect-label">Prospect says</div><div class="sim-prospect-text">"Approvals usually happen in GitLab, but sometimes also in Slack or Jira depending on the team."</div></div>
+        <div class="sim-question">What does this MOST likely indicate?</div>
+        <div class="sim-options">
+          <div class="sim-option" onclick="answerSim2(this,2,'A')"><span class="sim-opt-letter">A</span>A strong governance model with multiple checkpoints</div>
+          <div class="sim-option" onclick="answerSim2(this,2,'B')"><span class="sim-opt-letter">B</span>Inconsistent approval workflows — governance is happening outside a controlled system</div>
+          <div class="sim-option" onclick="answerSim2(this,2,'C')"><span class="sim-opt-letter">C</span>A Terraform limitation</div>
+          <div class="sim-option" onclick="answerSim2(this,2,'D')"><span class="sim-opt-letter">D</span>A cloud provider issue</div>
+        </div>
+        <div class="sim-feedback" id="s2fb-2"></div>
+        <div class="sim-next-response" id="s2nr-2"><div class="sim-prospect-label">What happens next</div><div class="sim-prospect-text">You dig deeper.</div></div>
+        <button class="sim-next-btn" id="s2nb-2" onclick="nextSim2(3)">Continue →</button>
+      </div>
+
+      <div class="sim-screen" id="s2-3">
+        <div class="sim-step-icon">🔍</div>
+        <div class="sim-question">What is the BEST next question?</div>
+        <div class="sim-options">
+          <div class="sim-option" onclick="answerSim2(this,3,'A')"><span class="sim-opt-letter">A</span>"How many engineers do you have?"</div>
+          <div class="sim-option" onclick="answerSim2(this,3,'B')"><span class="sim-opt-letter">B</span>"Is that process consistent across all teams and environments?"</div>
+          <div class="sim-option" onclick="answerSim2(this,3,'C')"><span class="sim-opt-letter">C</span>"Do you use Terraform modules?"</div>
+          <div class="sim-option" onclick="answerSim2(this,3,'D')"><span class="sim-opt-letter">D</span>"Why not centralize everything in GitLab?"</div>
+        </div>
+        <div class="sim-feedback" id="s2fb-3"></div>
+        <div class="sim-next-response" id="s2nr-3"><div class="sim-prospect-label">Prospect responds</div><div class="sim-prospect-text">"Not really. Some teams follow stricter processes, others move faster."</div></div>
+        <button class="sim-next-btn" id="s2nb-3" onclick="nextSim2(4)">Continue →</button>
+      </div>
+
+      <div class="sim-screen" id="s2-4">
+        <div class="sim-step-icon">🧠</div>
+        <div class="sim-prospect-bubble"><div class="sim-prospect-label">Prospect said</div><div class="sim-prospect-text">"Not really. Some teams follow stricter processes, others move faster."</div></div>
+        <div class="sim-question">What type of problem is this?</div>
+        <div class="sim-options">
+          <div class="sim-option" onclick="answerSim2(this,4,'A')"><span class="sim-opt-letter">A</span>Terraform problem</div>
+          <div class="sim-option" onclick="answerSim2(this,4,'B')"><span class="sim-opt-letter">B</span>Governance and control inconsistency — uneven enforcement across teams</div>
+          <div class="sim-option" onclick="answerSim2(this,4,'C')"><span class="sim-opt-letter">C</span>Cost issue</div>
+          <div class="sim-option" onclick="answerSim2(this,4,'D')"><span class="sim-opt-letter">D</span>Cloud scaling issue</div>
+        </div>
+        <div class="sim-feedback" id="s2fb-4"></div>
+        <div class="sim-next-response" id="s2nr-4"><div class="sim-prospect-label">What happens next</div><div class="sim-prospect-text">You expand toward impact.</div></div>
+        <button class="sim-next-btn" id="s2nb-4" onclick="nextSim2(5)">Continue →</button>
+      </div>
+
+      <div class="sim-screen" id="s2-5">
+        <div class="sim-step-icon">📈</div>
+        <div class="sim-question">What is the BEST follow-up?</div>
+        <div class="sim-options">
+          <div class="sim-option" onclick="answerSim2(this,5,'A')"><span class="sim-opt-letter">A</span>"What version of Terraform are you using?"</div>
+          <div class="sim-option" onclick="answerSim2(this,5,'B')"><span class="sim-opt-letter">B</span>"Has that created any audit or compliance challenges?"</div>
+          <div class="sim-option" onclick="answerSim2(this,5,'C')"><span class="sim-opt-letter">C</span>"Do you use remote state?"</div>
+          <div class="sim-option" onclick="answerSim2(this,5,'D')"><span class="sim-opt-letter">D</span>"Are you multi-cloud?"</div>
+        </div>
+        <div class="sim-feedback" id="s2fb-5"></div>
+        <div class="sim-next-response" id="s2nr-5"><div class="sim-prospect-label">Prospect responds</div><div class="sim-prospect-text">"Yeah, audits take a long time. We usually have to pull evidence manually."</div></div>
+        <button class="sim-next-btn" id="s2nb-5" onclick="nextSim2(6)">Continue →</button>
+      </div>
+
+      <div class="sim-screen" id="s2-6">
+        <div class="sim-step-icon">🧠</div>
+        <div class="sim-prospect-bubble"><div class="sim-prospect-label">Prospect said</div><div class="sim-prospect-text">"Audits take a long time. We usually have to pull evidence manually."</div></div>
+        <div class="sim-question">What is the PRIMARY problem type?</div>
+        <div class="sim-options">
+          <div class="sim-option" onclick="answerSim2(this,6,'A')"><span class="sim-opt-letter">A</span>Platform bottleneck</div>
+          <div class="sim-option" onclick="answerSim2(this,6,'B')"><span class="sim-opt-letter">B</span>Governance and compliance gap — no system of record, manual evidence gathering</div>
+          <div class="sim-option" onclick="answerSim2(this,6,'C')"><span class="sim-opt-letter">C</span>Security breach</div>
+          <div class="sim-option" onclick="answerSim2(this,6,'D')"><span class="sim-opt-letter">D</span>Cost inefficiency</div>
+        </div>
+        <div class="sim-feedback" id="s2fb-6"></div>
+        <div class="sim-next-response" id="s2nr-6"><div class="sim-prospect-label">What happens next</div><div class="sim-prospect-text">You prepare to summarize.</div></div>
+        <button class="sim-next-btn" id="s2nb-6" onclick="nextSim2(7)">Continue →</button>
+      </div>
+
+      <div class="sim-screen" id="s2-7">
+        <div class="sim-step-icon">🗣️</div>
+        <div class="sim-question">Time to summarize. Which response is BEST?</div>
+        <div class="sim-options">
+          <div class="sim-option" onclick="answerSim2(this,7,'A')"><span class="sim-opt-letter">A</span>"You need better audit logs."</div>
+          <div class="sim-option" onclick="answerSim2(this,7,'B')"><span class="sim-opt-letter">B</span>"It sounds like the challenge isn't Terraform, but having a consistent and auditable process across teams."</div>
+          <div class="sim-option" onclick="answerSim2(this,7,'C')"><span class="sim-opt-letter">C</span>"We replace GitLab pipelines."</div>
+          <div class="sim-option" onclick="answerSim2(this,7,'D')"><span class="sim-opt-letter">D</span>"You should standardize your workflows."</div>
+        </div>
+        <div class="sim-feedback" id="s2fb-7"></div>
+        <div class="sim-next-response" id="s2nr-7"><div class="sim-prospect-label">What happens next</div><div class="sim-prospect-text">The prospect agrees.</div></div>
+        <button class="sim-next-btn" id="s2nb-7" onclick="nextSim2(8)">Continue →</button>
+      </div>
+
+      <div class="sim-screen" id="s2-8">
+        <div class="sim-step-icon">🚦</div>
+        <div class="sim-question">What should you do NEXT?</div>
+        <div class="sim-options">
+          <div class="sim-option" onclick="answerSim2(this,8,'A')"><span class="sim-opt-letter">A</span>Show a full product demo</div>
+          <div class="sim-option" onclick="answerSim2(this,8,'B')"><span class="sim-opt-letter">B</span>Talk about pricing</div>
+          <div class="sim-option" onclick="answerSim2(this,8,'C')"><span class="sim-opt-letter">C</span>Suggest a deeper security and technical conversation</div>
+          <div class="sim-option" onclick="answerSim2(this,8,'D')"><span class="sim-opt-letter">D</span>End the call</div>
+        </div>
+        <div class="sim-feedback" id="s2fb-8"></div>
+        <div class="sim-next-response" id="s2nr-8"><div class="sim-prospect-label">Suggested language</div><div class="sim-prospect-text">"If it makes sense, we can bring in one of our solutions engineers to walk through how teams typically standardize approvals and make audits a lot easier."</div></div>
+        <button class="sim-next-btn" id="s2nb-8" onclick="finishSim2()">See Results →</button>
+      </div>
+
+      <div class="sim-screen" id="s2-final">
+        <div class="sim-final">
+          <div class="sim-final-icon">🏁</div>
+          <h2>Simulation Complete</h2>
+          <div class="sim-score" id="s2-score">8/8</div>
+          <div class="sim-score-label">correct answers</div>
+          <div class="sim-outcome-grid">
+            <div class="sim-outcome-item"><h4>Scenario tested</h4><p>Governance &amp; Compliance problem — a budget-driving scenario with real urgency.</p></div>
+            <div class="sim-outcome-item"><h4>Key signals</h4><p>"Audit visibility isn't great" / "Approvals happen in multiple places" / "We pull evidence manually"</p></div>
+            <div class="sim-outcome-item"><h4>Why this gets budget</h4><p>Security and compliance problems create urgency, justify investment, and involve more stakeholders than typical tooling decisions.</p></div>
+            <div class="sim-outcome-item"><h4>The key move</h4><p>Connect governance inconsistency → audit pain → business risk. Not Terraform, not GitLab — the process that wraps them.</p></div>
+          </div>
+          <button class="sim-retry-btn" onclick="resetSim2()">↺ Retry Simulation</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="nav-buttons">
+    <button class="nav-btn" onclick="showPage('m8')">← Mock Call #1</button>
+    <button class="nav-btn next" onclick="showPage('m10')">🎯 Mock Call #3 →</button>
+  </div>
+</div>
+
+<!-- MOCK CALL #3 -->
+<div id="page-m10" class="page">
+  <div class="module-header" style="border-left-color:var(--amber);">
+    <div class="module-num" style="color:var(--amber);">MOCK CALL #3 — ENTERPRISE COMPLEXITY</div>
+    <h1>Mock Call #3 — Helix Systems</h1>
+    <p>Enterprise scale and coordination. Nothing is obviously broken — but everything is getting harder. The hardest scenario to recognize, and where large deals originate.</p>
+    <div class="module-meta"><span class="meta-pill">⏱ ~15 min</span><span class="meta-pill">8 decision points</span><span class="meta-pill">Scored</span></div>
+  </div>
+
+  <div class="sim-wrapper">
+    <div class="sim-header">
+      <h2 id="s3-header-title">Mock Call #3 — Helix Systems</h2>
+      <p id="s3-header-sub">Enterprise complexity scenario</p>
+      <div class="sim-progress"><div class="sim-progress-fill" id="s3-pfill" style="width:0%"></div></div>
+      <div class="sim-step-indicator" id="s3-indicator">Ready to start</div>
+    </div>
+    <div class="sim-body">
+
+      <div class="sim-screen active" id="s3-setup">
+        <div class="sim-setup-company">
+          <h3>📋 Your Pre-Call Brief</h3>
+          <div class="sim-context-grid">
+            <div class="context-item"><div class="context-label">Company</div><div class="context-value">Helix Systems</div></div>
+            <div class="context-item"><div class="context-label">Industry</div><div class="context-value">Enterprise SaaS</div></div>
+            <div class="context-item"><div class="context-label">Size</div><div class="context-value">3,500 employees, ~700 engineers</div></div>
+            <div class="context-item"><div class="context-label">Your Contact</div><div class="context-value">Senior Platform Architect</div></div>
+            <div class="context-item"><div class="context-label">Known Stack</div><div class="context-value">Terraform + some Pulumi, GitHub Actions + Jenkins + internal tooling</div></div>
+            <div class="context-item"><div class="context-label">Scale</div><div class="context-value">Multi-cloud (AWS + Azure), 20+ teams managing infrastructure independently</div></div>
+          </div>
+          <p style="font-size:13px;color:var(--text-muted);margin:0;">No clear project yet. The prospect is trying to make sense of growing complexity. Nothing is broken — everything is getting harder.</p>
+        </div>
+        <div class="sim-goal">
+          <div class="sim-goal-title">🎯 Your Goal</div>
+          <ul><li>Understand how infrastructure is coordinated across teams</li><li>Identify where complexity is creating real friction</li><li>Determine if there's a scaling problem worth pursuing</li></ul>
+        </div>
+        <button class="sim-start-btn" onclick="startSim3()">Start Simulation →</button>
+      </div>
+
+      <div class="sim-screen" id="s3-1">
+        <div class="sim-step-icon">🧠</div>
+        <div class="sim-prospect-bubble"><div class="sim-prospect-label">Prospect says</div><div class="sim-prospect-text">"Things aren't broken exactly, but managing infrastructure across teams is getting more complicated."</div></div>
+        <div class="sim-question">What do you do NEXT?</div>
+        <div class="sim-options">
+          <div class="sim-option" onclick="answerSim3(this,1,'A')"><span class="sim-opt-letter">A</span>"We help replace Terraform workflows."</div>
+          <div class="sim-option" onclick="answerSim3(this,1,'B')"><span class="sim-opt-letter">B</span>"What tools are you using?"</div>
+          <div class="sim-option" onclick="answerSim3(this,1,'C')"><span class="sim-opt-letter">C</span>"Can you walk me through how teams manage and coordinate infrastructure today?"</div>
+          <div class="sim-option" onclick="answerSim3(this,1,'D')"><span class="sim-opt-letter">D</span>"Are you using Terraform Cloud?"</div>
+        </div>
+        <div class="sim-feedback" id="s3fb-1"></div>
+        <div class="sim-next-response" id="s3nr-1"><div class="sim-prospect-label">What happens next</div><div class="sim-prospect-text">The prospect explains their setup.</div></div>
+        <button class="sim-next-btn" id="s3nb-1" onclick="nextSim3(2)">Continue →</button>
+      </div>
+
+      <div class="sim-screen" id="s3-2">
+        <div class="sim-step-icon">🔧</div>
+        <div class="sim-prospect-bubble"><div class="sim-prospect-label">Prospect says</div><div class="sim-prospect-text">"Each team owns their own infrastructure. We have some shared modules, but workflows differ."</div></div>
+        <div class="sim-question">What does this MOST likely indicate?</div>
+        <div class="sim-options">
+          <div class="sim-option" onclick="answerSim3(this,2,'A')"><span class="sim-opt-letter">A</span>Strong standardization — each team has ownership and autonomy</div>
+          <div class="sim-option" onclick="answerSim3(this,2,'B')"><span class="sim-opt-letter">B</span>Distributed ownership with inconsistent workflows — coordination challenges ahead</div>
+          <div class="sim-option" onclick="answerSim3(this,2,'C')"><span class="sim-opt-letter">C</span>A Terraform limitation</div>
+          <div class="sim-option" onclick="answerSim3(this,2,'D')"><span class="sim-opt-letter">D</span>A cloud provider issue</div>
+        </div>
+        <div class="sim-feedback" id="s3fb-2"></div>
+        <div class="sim-next-response" id="s3nr-2"><div class="sim-prospect-label">What happens next</div><div class="sim-prospect-text">You dig deeper.</div></div>
+        <button class="sim-next-btn" id="s3nb-2" onclick="nextSim3(3)">Continue →</button>
+      </div>
+
+      <div class="sim-screen" id="s3-3">
+        <div class="sim-step-icon">🔍</div>
+        <div class="sim-question">What is the BEST next question?</div>
+        <div class="sim-options">
+          <div class="sim-option" onclick="answerSim3(this,3,'A')"><span class="sim-opt-letter">A</span>"How many teams do you have?"</div>
+          <div class="sim-option" onclick="answerSim3(this,3,'B')"><span class="sim-opt-letter">B</span>"Where does coordination between teams start to break down?"</div>
+          <div class="sim-option" onclick="answerSim3(this,3,'C')"><span class="sim-opt-letter">C</span>"What cloud are you on?"</div>
+          <div class="sim-option" onclick="answerSim3(this,3,'D')"><span class="sim-opt-letter">D</span>"Do you use modules?"</div>
+        </div>
+        <div class="sim-feedback" id="s3fb-3"></div>
+        <div class="sim-next-response" id="s3nr-3"><div class="sim-prospect-label">Prospect responds</div><div class="sim-prospect-text">"Sometimes changes in one system impact others, and it's not always obvious until something breaks."</div></div>
+        <button class="sim-next-btn" id="s3nb-3" onclick="nextSim3(4)">Continue →</button>
+      </div>
+
+      <div class="sim-screen" id="s3-4">
+        <div class="sim-step-icon">🧠</div>
+        <div class="sim-prospect-bubble"><div class="sim-prospect-label">Prospect said</div><div class="sim-prospect-text">"Sometimes changes in one system impact others, and it's not always obvious until something breaks."</div></div>
+        <div class="sim-question">What type of problem is this?</div>
+        <div class="sim-options">
+          <div class="sim-option" onclick="answerSim3(this,4,'A')"><span class="sim-opt-letter">A</span>A Terraform limitation</div>
+          <div class="sim-option" onclick="answerSim3(this,4,'B')"><span class="sim-opt-letter">B</span>Cross-team coordination and dependency management problem</div>
+          <div class="sim-option" onclick="answerSim3(this,4,'C')"><span class="sim-opt-letter">C</span>A cost issue</div>
+          <div class="sim-option" onclick="answerSim3(this,4,'D')"><span class="sim-opt-letter">D</span>A security issue</div>
+        </div>
+        <div class="sim-feedback" id="s3fb-4"></div>
+        <div class="sim-next-response" id="s3nr-4"><div class="sim-prospect-label">What happens next</div><div class="sim-prospect-text">You expand toward impact.</div></div>
+        <button class="sim-next-btn" id="s3nb-4" onclick="nextSim3(5)">Continue →</button>
+      </div>
+
+      <div class="sim-screen" id="s3-5">
+        <div class="sim-step-icon">📈</div>
+        <div class="sim-question">What is the BEST follow-up?</div>
+        <div class="sim-options">
+          <div class="sim-option" onclick="answerSim3(this,5,'A')"><span class="sim-opt-letter">A</span>"What version of Terraform are you using?"</div>
+          <div class="sim-option" onclick="answerSim3(this,5,'B')"><span class="sim-opt-letter">B</span>"How often does that lead to issues or delays?"</div>
+          <div class="sim-option" onclick="answerSim3(this,5,'C')"><span class="sim-opt-letter">C</span>"Do you use state files?"</div>
+          <div class="sim-option" onclick="answerSim3(this,5,'D')"><span class="sim-opt-letter">D</span>"Are you using CI/CD?"</div>
+        </div>
+        <div class="sim-feedback" id="s3fb-5"></div>
+        <div class="sim-next-response" id="s3nr-5"><div class="sim-prospect-label">Prospect responds</div><div class="sim-prospect-text">"It slows things down, and sometimes we have to roll things back when dependencies weren't clear."</div></div>
+        <button class="sim-next-btn" id="s3nb-5" onclick="nextSim3(6)">Continue →</button>
+      </div>
+
+      <div class="sim-screen" id="s3-6">
+        <div class="sim-step-icon">🧠</div>
+        <div class="sim-prospect-bubble"><div class="sim-prospect-label">Prospect said</div><div class="sim-prospect-text">"It slows things down, and sometimes we have to roll things back when dependencies weren't clear."</div></div>
+        <div class="sim-question">What is the PRIMARY problem type?</div>
+        <div class="sim-options">
+          <div class="sim-option" onclick="answerSim3(this,6,'A')"><span class="sim-opt-letter">A</span>Platform bottleneck</div>
+          <div class="sim-option" onclick="answerSim3(this,6,'B')"><span class="sim-opt-letter">B</span>Governance issue</div>
+          <div class="sim-option" onclick="answerSim3(this,6,'C')"><span class="sim-opt-letter">C</span>Enterprise complexity — hidden dependencies, coordination breakdown across teams</div>
+          <div class="sim-option" onclick="answerSim3(this,6,'D')"><span class="sim-opt-letter">D</span>Cost optimization</div>
+        </div>
+        <div class="sim-feedback" id="s3fb-6"></div>
+        <div class="sim-next-response" id="s3nr-6"><div class="sim-prospect-label">What happens next</div><div class="sim-prospect-text">You prepare to summarize.</div></div>
+        <button class="sim-next-btn" id="s3nb-6" onclick="nextSim3(7)">Continue →</button>
+      </div>
+
+      <div class="sim-screen" id="s3-7">
+        <div class="sim-step-icon">🗣️</div>
+        <div class="sim-question">Time to summarize. Which response is BEST?</div>
+        <div class="sim-options">
+          <div class="sim-option" onclick="answerSim3(this,7,'A')"><span class="sim-opt-letter">A</span>"You need better Terraform modules."</div>
+          <div class="sim-option" onclick="answerSim3(this,7,'B')"><span class="sim-opt-letter">B</span>"It sounds like the challenge isn't any one tool, but coordinating infrastructure across teams as systems become more interconnected."</div>
+          <div class="sim-option" onclick="answerSim3(this,7,'C')"><span class="sim-opt-letter">C</span>"You should standardize everything."</div>
+          <div class="sim-option" onclick="answerSim3(this,7,'D')"><span class="sim-opt-letter">D</span>"We can replace your pipelines."</div>
+        </div>
+        <div class="sim-feedback" id="s3fb-7"></div>
+        <div class="sim-next-response" id="s3nr-7"><div class="sim-prospect-label">What happens next</div><div class="sim-prospect-text">The prospect agrees.</div></div>
+        <button class="sim-next-btn" id="s3nb-7" onclick="nextSim3(8)">Continue →</button>
+      </div>
+
+      <div class="sim-screen" id="s3-8">
+        <div class="sim-step-icon">🚦</div>
+        <div class="sim-question">What should you do NEXT?</div>
+        <div class="sim-options">
+          <div class="sim-option" onclick="answerSim3(this,8,'A')"><span class="sim-opt-letter">A</span>Jump into a product demo</div>
+          <div class="sim-option" onclick="answerSim3(this,8,'B')"><span class="sim-opt-letter">B</span>Talk about pricing</div>
+          <div class="sim-option" onclick="answerSim3(this,8,'C')"><span class="sim-opt-letter">C</span>Suggest a deeper architecture-focused technical conversation</div>
+          <div class="sim-option" onclick="answerSim3(this,8,'D')"><span class="sim-opt-letter">D</span>End the call</div>
+        </div>
+        <div class="sim-feedback" id="s3fb-8"></div>
+        <div class="sim-next-response" id="s3nr-8"><div class="sim-prospect-label">Suggested language</div><div class="sim-prospect-text">"If it makes sense, we can bring in one of our solutions engineers to walk through how teams typically coordinate infrastructure across systems as they scale."</div></div>
+        <button class="sim-next-btn" id="s3nb-8" onclick="finishSim3()">See Results →</button>
+      </div>
+
+      <div class="sim-screen" id="s3-final">
+        <div class="sim-final">
+          <div class="sim-final-icon">🏁</div>
+          <h2>Simulation Complete</h2>
+          <div class="sim-score" id="s3-score">8/8</div>
+          <div class="sim-score-label">correct answers</div>
+          <div class="sim-outcome-grid">
+            <div class="sim-outcome-item"><h4>Scenario tested</h4><p>Enterprise Complexity / Orchestration — the hardest to recognize and where large deals originate.</p></div>
+            <div class="sim-outcome-item"><h4>Key signals</h4><p>"Things are getting more complicated" / "Teams manage things differently" / "Dependencies weren't clear"</p></div>
+            <div class="sim-outcome-item"><h4>Why it's hard</h4><p>Nothing is obviously broken. Pain is gradual, not acute. Buyers often struggle to articulate the problem themselves.</p></div>
+            <div class="sim-outcome-item"><h4>The key move</h4><p>Focus on coordination and interconnection, not tools. "Not any one tool — it's coordinating across systems as they become more interconnected."</p></div>
+          </div>
+          <button class="sim-retry-btn" onclick="resetSim3()">↺ Retry Simulation</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="nav-buttons">
+    <button class="nav-btn" onclick="showPage('m9')">← Mock Call #2</button>
+    <button class="nav-btn next" onclick="showPage('cheatsheet')">📋 Cheat Sheet →</button>
+  </div>
+</div>
+<div id="page-cheatsheet" class="page">
+  <div class="hero">
+    <div class="hero-badge" style="background:var(--cyan-bg);color:var(--cyan);">Pre-Call Reference</div>
+    <h1>📋 SDR Cheat Sheet</h1>
+    <p>Open this before every call. Hear the signal → identify the pattern → ask the next question.</p>
+  </div>
+
+  <div class="card">
+    <h2>What You Hear → What It Means → What To Ask</h2>
+
+    <div style="background:var(--amber-bg);border:1px solid #fde68a;border-radius:8px;padding:14px 18px;margin-bottom:12px;">
+      <div style="font-family:var(--font-head);font-weight:700;font-size:12px;color:var(--amber);text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px;">🟡 Early — Setup / Not Breaking Yet</div>
+      <div class="two-col">
+        <div>
+          <p style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:4px;">They say:</p>
+          <ul class="content-list dot" style="margin:0;">
+            <li>"We use GitHub Actions / CI for infra"</li>
+            <li>"We've built scripts around it"</li>
+            <li>"It works, but it's messy"</li>
+          </ul>
+        </div>
+        <div>
+          <p style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:4px;">Means → Ask:</p>
+          <p style="font-size:12px;color:var(--text-mid);margin-bottom:6px;">Standard Terraform + CI/CD, early scaling friction</p>
+          <ul class="content-list check" style="margin:0;">
+            <li style="font-size:12px;">"How do infra changes get deployed today?"</li>
+            <li style="font-size:12px;">"How has that evolved as you've grown?"</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:14px 18px;margin-bottom:12px;">
+      <div style="font-family:var(--font-head);font-weight:700;font-size:12px;color:#c2410c;text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px;">🟠 Mid — Complexity / Coordination Pain</div>
+      <div class="two-col">
+        <div>
+          <p style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:4px;">They say:</p>
+          <ul class="content-list dot" style="margin:0;">
+            <li>"Things are getting harder to manage"</li>
+            <li>"Teams do things differently"</li>
+            <li>"Changes impact other systems"</li>
+            <li>"We maintain a lot of scripts"</li>
+          </ul>
+        </div>
+        <div>
+          <p style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:4px;">Means → Ask: <span style="color:#c2410c;font-size:11px;">(Scenario 3)</span></p>
+          <p style="font-size:12px;color:var(--text-mid);margin-bottom:6px;">Enterprise complexity — cross-team coordination breaking down</p>
+          <ul class="content-list check" style="margin:0;">
+            <li style="font-size:12px;">"Where does the process break down?"</li>
+            <li style="font-size:12px;">"How do teams coordinate changes?"</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div style="background:var(--red-bg);border:1px solid #fca5a5;border-radius:8px;padding:14px 18px;">
+      <div style="font-family:var(--font-head);font-weight:700;font-size:12px;color:var(--red);text-transform:uppercase;letter-spacing:.07em;margin-bottom:12px;">🔴 High — Real Pain / Urgency</div>
+
+      <div style="background:#fff;border:1px solid var(--border);border-radius:7px;padding:12px 14px;margin-bottom:8px;">
+        <div style="font-family:var(--font-head);font-weight:700;font-size:12px;color:var(--purple);margin-bottom:8px;">🧱 Platform Bottleneck <span style="font-weight:400;color:var(--text-muted)">(Scenario 1)</span></div>
+        <div class="two-col">
+          <div>
+            <ul class="content-list dot" style="margin:0;">
+              <li>"Platform team is overloaded"</li>
+              <li>"Developers are waiting on infra"</li>
+              <li>"Requests take too long"</li>
+            </ul>
+          </div>
+          <div>
+            <p style="font-size:12px;color:var(--text-mid);margin-bottom:5px;">Bottleneck / self-service pressure</p>
+            <ul class="content-list check" style="margin:0;">
+              <li style="font-size:12px;">"How long do requests take?"</li>
+              <li style="font-size:12px;">"Is there a push for self-service?"</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div style="background:#fff;border:1px solid var(--border);border-radius:7px;padding:12px 14px;margin-bottom:8px;">
+        <div style="font-family:var(--font-head);font-weight:700;font-size:12px;color:var(--cyan);margin-bottom:8px;">🔐 Governance / Compliance <span style="font-weight:400;color:var(--text-muted)">(Scenario 2)</span></div>
+        <div class="two-col">
+          <div>
+            <ul class="content-list dot" style="margin:0;">
+              <li>"Audit prep is painful"</li>
+              <li>"Approvals are manual"</li>
+              <li>"We can't prove changes"</li>
+            </ul>
+          </div>
+          <div>
+            <p style="font-size:12px;color:var(--text-mid);margin-bottom:5px;">Governance gap / audit risk</p>
+            <ul class="content-list check" style="margin:0;">
+              <li style="font-size:12px;">"How are approvals handled today?"</li>
+              <li style="font-size:12px;">"Is that consistent across teams?"</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div style="background:#fff;border:1px solid var(--border);border-radius:7px;padding:12px 14px;">
+        <div style="font-family:var(--font-head);font-weight:700;font-size:12px;color:var(--red);margin-bottom:8px;">🔥 Active Buying Signal</div>
+        <div class="two-col">
+          <div>
+            <ul class="content-list dot" style="margin:0;">
+              <li>"Terraform Cloud isn't working"</li>
+              <li>"We're evaluating alternatives"</li>
+            </ul>
+          </div>
+          <div>
+            <p style="font-size:12px;color:var(--text-mid);margin-bottom:5px;">Active project — budget likely exists</p>
+            <ul class="content-list check" style="margin:0;">
+              <li style="font-size:12px;">"What's driving the evaluation?"</li>
+              <li style="font-size:12px;">"What's missing today?"</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>🎯 Core Questions — Use on Every Call</h2>
+    <ul class="content-list check">
+      <li>"How do infra changes get deployed today?"</li>
+      <li>"Where does that break down?"</li>
+      <li>"Is that consistent across teams?"</li>
+      <li>"How do teams coordinate changes?"</li>
+      <li>"What happens when something breaks?"</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>🧠 Positioning — Simple and Safe</h2>
+    <div class="callout purple">
+      <div class="callout-title purple">One Line</div>
+      <p>Spacelift helps teams run and scale infrastructure workflows across teams — with more control and coordination than CI/CD or Terraform alone.</p>
+    </div>
+    <div class="callout cyan" style="margin-top:10px;">
+      <div class="callout-title cyan">The Reframe</div>
+      <p>You're not replacing Terraform. You're fixing fragmented workflows, manual governance, and poor coordination at scale.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>⚡ Quick Scenario Map</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px;">
+      <div style="background:var(--purple-bg);border:1px solid #ddd6fe;border-radius:8px;padding:12px 14px;text-align:center;">
+        <div style="font-size:18px;margin-bottom:4px;">🧱</div>
+        <div style="font-family:var(--font-head);font-weight:700;font-size:12px;color:var(--purple);margin-bottom:3px;">Platform Bottleneck</div>
+        <div style="font-size:11px;color:var(--text-muted);">Speed problem</div>
+      </div>
+      <div style="background:var(--cyan-bg);border:1px solid #a5f3fc;border-radius:8px;padding:12px 14px;text-align:center;">
+        <div style="font-size:18px;margin-bottom:4px;">🔐</div>
+        <div style="font-family:var(--font-head);font-weight:700;font-size:12px;color:var(--cyan);margin-bottom:3px;">Governance / Compliance</div>
+        <div style="font-size:11px;color:var(--text-muted);">Risk problem</div>
+      </div>
+      <div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:12px 14px;text-align:center;">
+        <div style="font-size:18px;margin-bottom:4px;">🏢</div>
+        <div style="font-family:var(--font-head);font-weight:700;font-size:12px;color:#c2410c;margin-bottom:3px;">Enterprise Complexity</div>
+        <div style="font-size:11px;color:var(--text-muted);">Scale problem</div>
+      </div>
+    </div>
+    <div class="callout"><div class="callout-title">🧭 Mental Model</div><p>Hear the signal → Identify the pattern → Ask the next question</p></div>
+  </div>
+
+  <div class="complete-section">
+    <button class="complete-btn" id="btn-complete-cs" onclick="markComplete('cs')">✓ Mark Cheat Sheet Reviewed</button>
+    <p class="complete-note">Progress saved in this browser.</p>
+  </div>
+  <div class="nav-buttons">
+    <button class="nav-btn" onclick="showPage('m10')">← Mock Call #3</button>
+    <button class="nav-btn next" onclick="showPage('overview')">🏠 Overview</button>
+  </div>
+</div>
+<script>
+const MODULES=['m1','m2','m3','m4','m5','m6','m7','m8','m9','m10','cs'];
+const PAGES=['overview','m1','m2','m3','m4','m5','m6','m7','m8','m9','m10','cheatsheet'];
+const KC={
+  m1q1:{correct:'C',exp:'GitHub Actions is the pipeline — it executes changes. Terraform is the Code layer.'},
+  m1q2:{correct:'B',exp:'Pull requests are the Git stage — where changes are proposed and reviewed.'},
+  m2q1:{correct:'B',exp:'Goal is to understand how the workflow runs across teams before probing problems — not pitch, not ask about tools.'},
+  m2q2:{correct:'B',exp:'Manual Slack/ticket approvals = governance and coordination breakdown. Not a Terraform problem.'},
+  m2q3:{correct:'B',exp:'Unclear ownership signals weak workflow standardization. Organizational problem, not technical.'},
+  m3q1:{correct:'B',exp:'Growing team count = growing coordination complexity. The system hasn\'t changed — the number of interactions between people and systems has.'},
+  m3q2:{correct:'B',exp:'Cross-service dependencies that break signal a coordination and orchestration gap. Nothing is managing the sequencing cleanly.'},
+  m4q1:{correct:'B',exp:'Piecing together logs and tickets for audit prep = no centralized history. Weak audit trail is a strong buying signal — audits create urgency and budget.'},
+  m4q2:{correct:'B',exp:'Policies that exist but aren\'t enforced = policy enforcement gap. The intention is there; the system to enforce it automatically is not.'},
+  m5q1:{correct:'C',exp:'A buried platform team isn\'t a headcount problem — it\'s an operating model problem. The ticket-driven model doesn\'t scale as request volume grows.'},
+  m5q2:{correct:'C',exp:'"Self-service but not full access" is the classic self-service with guardrails request. This is the desired future state Spacelift is built to enable.'},
+  m6q1:{correct:'B',exp:'"Works fine" doesn\'t mean there\'s no pain — it means you haven\'t found it yet. Always probe for where it breaks down at scale before drawing conclusions.'},
+  m6q2:{correct:'C',exp:'Being transparent about non-fit builds long-term credibility. A prospect who remembers you told them the honest truth will call you back when the time is right.'},
+  m7q1:{correct:'B',exp:'"A bit messy" is a surface answer. Strong reps never accept it — they always ask where it specifically breaks down. The real problem lives one level deeper.'},
+  m7q2:{correct:'C',exp:'Forcing a demo with no clear problem wastes everyone\'s time and damages credibility. Respectful disqualification keeps the door open for when they scale into the problem.'},
+};
+
+// SIM 1 data
+const SIM={
+  1:{correct:'C',why:'Starting with system understanding — not pitching, not jumping to tools. Strong reps map the workflow first.'},
+  2:{correct:'B',why:'CI/CD as infrastructure orchestration is a classic pattern. Works early, breaks at scale.'},
+  3:{correct:'B',why:'Moving from system → friction. You\'ve mapped their setup; now find where it actually breaks.'},
+  4:{correct:'B',why:'Lack of standardization + manual approvals = governance and coordination problem. Not a Terraform issue.'},
+  5:{correct:'B',why:'Making the problem real and quantifiable. Business impact comes from asking how often it creates delays.'},
+  6:{correct:'B',why:'Platform team overloaded + developers blocked = Platform Bottleneck. Classic Spacelift entry point.'},
+  7:{correct:'B',why:'Reflects their words, reframes correctly, avoids pitching. "Not Terraform, it\'s the workflow" is the key move.'},
+  8:{correct:'C',why:'You\'ve confirmed pain, impact, alignment. Earn the next step — don\'t pitch or ask pricing.'},
+};
+// SIM 2 data
+const SIM2={
+  1:{correct:'C',why:'Starting with process understanding, not jumping to solution or compliance jargon. Map governance workflow first.'},
+  2:{correct:'B',why:'Approvals happening in multiple systems (GitLab + Slack + Jira) = inconsistency. Governance is outside a controlled system.'},
+  3:{correct:'B',why:'Testing for consistency — identifying whether governance is scalable, not just whether it exists.'},
+  4:{correct:'B',why:'Uneven enforcement across teams = governance inconsistency. Lack of centralized control. Real risk exposure.'},
+  5:{correct:'B',why:'Connecting process gaps → business impact. Moving toward risk and urgency — this is where compliance budget lives.'},
+  6:{correct:'B',why:'Manual evidence gathering + no system of record = governance and compliance gap. Audits create urgency and budget.'},
+  7:{correct:'B',why:'Reframes correctly — ties to governance, reflects their words, doesn\'t pitch a specific feature.'},
+  8:{correct:'C',why:'You\'ve identified compliance risk and confirmed real pain. A security + platform deep dive is the right next step.'},
+};
+// SIM 3 data
+const SIM3={
+  1:{correct:'C',why:'Start broad, focus on coordination not tools. Don\'t assume a problem — explore how systems interact across teams.'},
+  2:{correct:'B',why:'Decentralized ownership with differing workflows signals potential coordination challenges — especially as teams scale.'},
+  3:{correct:'B',why:'Moving from structure → friction. Identifying interdependencies and breakdown points, not counting teams.'},
+  4:{correct:'B',why:'Hidden dependencies + unclear impact = cross-team coordination and dependency management problem. No orchestration layer.'},
+  5:{correct:'B',why:'Quantifying impact — turning complexity into a business problem with real consequences (slowdowns, rollbacks).'},
+  6:{correct:'C',why:'Multiple teams, shared infrastructure, unclear dependencies, coordination breakdown = Enterprise Complexity / Orchestration problem.'},
+  7:{correct:'B',why:'Acknowledges complexity, reframes correctly without oversimplifying. "Not any one tool — coordinating across systems."'},
+  8:{correct:'C',why:'You\'ve confirmed real complexity and impact. An architecture-focused technical conversation earns the right next step.'},
+};
+
+let simScore=0,simDone={};
+let simScore2=0,simDone2={};
+let simScore3=0,simDone3={};
+
+function getP(){try{return JSON.parse(localStorage.getItem('sl_sdr_v2')||'{}')}catch(e){return{}}}
+function saveP(p){try{localStorage.setItem('sl_sdr_v2',JSON.stringify(p))}catch(e){}}
+function updateUI(){
+  const p=getP();
+  const done=MODULES.filter(m=>p[m]).length;
+  document.getElementById('progress-count').textContent=`${done} of ${MODULES.length} complete`;
+  document.getElementById('progress-bar').style.width=(done/MODULES.length*100)+'%';
+  MODULES.forEach(m=>{
+    const c=document.getElementById('check-'+m),ic=document.getElementById('icon-'+m),n=document.getElementById('nav-'+m);
+    if(p[m]){c&&c.classList.add('done');ic&&(ic.textContent='✓');n&&n.classList.add('done');}
+    else{c&&c.classList.remove('done');ic&&(ic.textContent='');n&&n.classList.remove('done');}
+    const b=document.getElementById('btn-complete-'+m);
+    if(b&&p[m]){b.textContent=m==='cs'?'✓ Reviewed':'✓ Completed';b.disabled=true;}
+  });
+}
+function markComplete(m){const p=getP();p[m]=new Date().toISOString();saveP(p);updateUI();}
+
+function showPage(id){
+  PAGES.forEach(p=>{const el=document.getElementById('page-'+p);if(el)el.classList.remove('active');});
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  const t=document.getElementById('page-'+id);if(t)t.classList.add('active');
+  const m={overview:0,m1:1,m2:2,m3:3,m4:4,m5:5,m6:6,m7:7,m8:8,m9:9,m10:10,cheatsheet:11};
+  const tabs=document.querySelectorAll('.nav-tab');
+  if(tabs[m[id]])tabs[m[id]].classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function toggleAccordion(h){
+  const b=h.nextElementSibling,o=h.classList.contains('open');
+  h.classList.toggle('open',!o);b.classList.toggle('open',!o);
+}
+
+function answerKC(el,qid,chosen){
+  const d=KC[qid];if(!d)return;
+  const c=el.closest('.kc-question'),opts=c.querySelectorAll('.kc-option');
+  opts.forEach(o=>o.classList.add('disabled'));
+  const fb=document.getElementById('fb-'+qid);
+  if(chosen===d.correct){
+    el.classList.add('correct');
+    fb.className='kc-feedback correct';
+    fb.innerHTML=`<strong>✓ Correct</strong>${d.exp}`;
+  }else{
+    el.classList.add('incorrect');
+    opts.forEach(o=>{if(o.textContent.trim().startsWith(d.correct))o.classList.add('reveal-correct');});
+    fb.className='kc-feedback incorrect';
+    fb.innerHTML=`<strong>✗ Incorrect — The best answer is ${d.correct}</strong>${d.exp}`;
+  }
+  fb.style.display='block';
+}
+
+// ── SIM 1 ──
+function showSS(id){document.querySelectorAll('#page-m8 .sim-screen').forEach(s=>s.classList.remove('active'));const t=document.getElementById('sim-s-'+id);if(t)t.classList.add('active');}
+function updateSP(step){
+  document.getElementById('sim-pfill').style.width=(step/8*100)+'%';
+  document.getElementById('sim-indicator').textContent=step===0?'Ready':step>=8?'Complete':`Step ${step} of 8`;
+  document.getElementById('sim-header-sub').textContent=step===0?'Platform bottleneck scenario':`Step ${step} of 8 — make your decision`;
+}
+function startSim(){simScore=0;simDone={};showSS(1);updateSP(0);}
+function answerSim(el,step,chosen){
+  if(simDone[step])return;simDone[step]=chosen;
+  const d=SIM[step];if(!d)return;
+  const opts=el.closest('.sim-options').querySelectorAll('.sim-option');
+  opts.forEach(o=>o.classList.add('disabled'));
+  const fb=document.getElementById('sfb-'+step),nr=document.getElementById('snr-'+step),nb=document.getElementById('snb-'+step);
+  if(chosen===d.correct){simScore++;el.classList.add('correct');fb.className='sim-feedback correct';fb.innerHTML=`<div class="sim-feedback-title">✓ Correct</div><p>${d.why}</p>`;}
+  else{el.classList.add('incorrect');opts.forEach(o=>{if(o.querySelector('.sim-opt-letter').textContent===d.correct)o.classList.add('reveal-correct');});fb.className='sim-feedback incorrect';fb.innerHTML=`<div class="sim-feedback-title">✗ Incorrect — Best answer is ${d.correct}</div><p>${d.why}</p>`;}
+  fb.style.display='block';if(nr)nr.style.display='block';if(nb)nb.style.display='inline-block';updateSP(step);
+}
+function nextStep(s){showSS(s);updateSP(s-1);window.scrollTo({top:document.getElementById('page-m8').offsetTop-80,behavior:'smooth'});}
+function finishSim(){showSS('final');document.getElementById('sim-score').textContent=`${simScore}/8`;updateSP(8);document.getElementById('sim-header-title').textContent='Results';markComplete('m8');}
+function resetSim(){
+  simScore=0;simDone={};
+  for(let i=1;i<=8;i++){
+    const s=document.getElementById('sim-s-'+i);if(!s)continue;
+    s.querySelectorAll('.sim-option').forEach(o=>o.classList.remove('correct','incorrect','reveal-correct','disabled'));
+    const fb=document.getElementById('sfb-'+i);if(fb){fb.style.display='none';fb.className='sim-feedback';}
+    const nr=document.getElementById('snr-'+i);if(nr)nr.style.display='none';
+    const nb=document.getElementById('snb-'+i);if(nb)nb.style.display='none';
+  }
+  document.getElementById('sim-header-title').textContent='Mock Call #1 — Northstar Pay';
+  showSS('setup');updateSP(0);window.scrollTo({top:document.getElementById('page-m8').offsetTop-80,behavior:'smooth'});
+}
+
+// ── SIM 2 ──
+function showS2(id){document.querySelectorAll('#page-m9 .sim-screen').forEach(s=>s.classList.remove('active'));const t=document.getElementById('s2-'+id);if(t)t.classList.add('active');}
+function updateS2P(step){
+  document.getElementById('s2-pfill').style.width=(step/8*100)+'%';
+  document.getElementById('s2-indicator').textContent=step===0?'Ready':step>=8?'Complete':`Step ${step} of 8`;
+  document.getElementById('s2-header-sub').textContent=step===0?'Governance & audit pressure scenario':`Step ${step} of 8 — make your decision`;
+}
+function startSim2(){simScore2=0;simDone2={};showS2(1);updateS2P(0);}
+function answerSim2(el,step,chosen){
+  if(simDone2[step])return;simDone2[step]=chosen;
+  const d=SIM2[step];if(!d)return;
+  const opts=el.closest('.sim-options').querySelectorAll('.sim-option');
+  opts.forEach(o=>o.classList.add('disabled'));
+  const fb=document.getElementById('s2fb-'+step),nr=document.getElementById('s2nr-'+step),nb=document.getElementById('s2nb-'+step);
+  if(chosen===d.correct){simScore2++;el.classList.add('correct');fb.className='sim-feedback correct';fb.innerHTML=`<div class="sim-feedback-title">✓ Correct</div><p>${d.why}</p>`;}
+  else{el.classList.add('incorrect');opts.forEach(o=>{if(o.querySelector('.sim-opt-letter').textContent===d.correct)o.classList.add('reveal-correct');});fb.className='sim-feedback incorrect';fb.innerHTML=`<div class="sim-feedback-title">✗ Incorrect — Best answer is ${d.correct}</div><p>${d.why}</p>`;}
+  fb.style.display='block';if(nr)nr.style.display='block';if(nb)nb.style.display='inline-block';updateS2P(step);
+}
+function nextSim2(s){showS2(s);updateS2P(s-1);window.scrollTo({top:document.getElementById('page-m9').offsetTop-80,behavior:'smooth'});}
+function finishSim2(){showS2('final');document.getElementById('s2-score').textContent=`${simScore2}/8`;updateS2P(8);document.getElementById('s2-header-title').textContent='Results';markComplete('m9');}
+function resetSim2(){
+  simScore2=0;simDone2={};
+  for(let i=1;i<=8;i++){
+    const s=document.getElementById('s2-'+i);if(!s)continue;
+    s.querySelectorAll('.sim-option').forEach(o=>o.classList.remove('correct','incorrect','reveal-correct','disabled'));
+    const fb=document.getElementById('s2fb-'+i);if(fb){fb.style.display='none';fb.className='sim-feedback';}
+    const nr=document.getElementById('s2nr-'+i);if(nr)nr.style.display='none';
+    const nb=document.getElementById('s2nb-'+i);if(nb)nb.style.display='none';
+  }
+  document.getElementById('s2-header-title').textContent='Mock Call #2 — Apex Financial';
+  showS2('setup');updateS2P(0);window.scrollTo({top:document.getElementById('page-m9').offsetTop-80,behavior:'smooth'});
+}
+
+// ── SIM 3 ──
+function showS3(id){document.querySelectorAll('#page-m10 .sim-screen').forEach(s=>s.classList.remove('active'));const t=document.getElementById('s3-'+id);if(t)t.classList.add('active');}
+function updateS3P(step){
+  document.getElementById('s3-pfill').style.width=(step/8*100)+'%';
+  document.getElementById('s3-indicator').textContent=step===0?'Ready':step>=8?'Complete':`Step ${step} of 8`;
+  document.getElementById('s3-header-sub').textContent=step===0?'Enterprise complexity scenario':`Step ${step} of 8 — make your decision`;
+}
+function startSim3(){simScore3=0;simDone3={};showS3(1);updateS3P(0);}
+function answerSim3(el,step,chosen){
+  if(simDone3[step])return;simDone3[step]=chosen;
+  const d=SIM3[step];if(!d)return;
+  const opts=el.closest('.sim-options').querySelectorAll('.sim-option');
+  opts.forEach(o=>o.classList.add('disabled'));
+  const fb=document.getElementById('s3fb-'+step),nr=document.getElementById('s3nr-'+step),nb=document.getElementById('s3nb-'+step);
+  if(chosen===d.correct){simScore3++;el.classList.add('correct');fb.className='sim-feedback correct';fb.innerHTML=`<div class="sim-feedback-title">✓ Correct</div><p>${d.why}</p>`;}
+  else{el.classList.add('incorrect');opts.forEach(o=>{if(o.querySelector('.sim-opt-letter').textContent===d.correct)o.classList.add('reveal-correct');});fb.className='sim-feedback incorrect';fb.innerHTML=`<div class="sim-feedback-title">✗ Incorrect — Best answer is ${d.correct}</div><p>${d.why}</p>`;}
+  fb.style.display='block';if(nr)nr.style.display='block';if(nb)nb.style.display='inline-block';updateS3P(step);
+}
+function nextSim3(s){showS3(s);updateS3P(s-1);window.scrollTo({top:document.getElementById('page-m10').offsetTop-80,behavior:'smooth'});}
+function finishSim3(){showS3('final');document.getElementById('s3-score').textContent=`${simScore3}/8`;updateS3P(8);document.getElementById('s3-header-title').textContent='Results';markComplete('m10');}
+function resetSim3(){
+  simScore3=0;simDone3={};
+  for(let i=1;i<=8;i++){
+    const s=document.getElementById('s3-'+i);if(!s)continue;
+    s.querySelectorAll('.sim-option').forEach(o=>o.classList.remove('correct','incorrect','reveal-correct','disabled'));
+    const fb=document.getElementById('s3fb-'+i);if(fb){fb.style.display='none';fb.className='sim-feedback';}
+    const nr=document.getElementById('s3nr-'+i);if(nr)nr.style.display='none';
+    const nb=document.getElementById('s3nb-'+i);if(nb)nb.style.display='none';
+  }
+  document.getElementById('s3-header-title').textContent='Mock Call #3 — Helix Systems';
+  showS3('setup');updateS3P(0);window.scrollTo({top:document.getElementById('page-m10').offsetTop-80,behavior:'smooth'});
+}
+
+updateUI();
+</script>
+</body>
+</html>
